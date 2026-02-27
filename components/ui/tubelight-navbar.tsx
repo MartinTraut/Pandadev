@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { LucideIcon } from "lucide-react";
@@ -19,7 +19,50 @@ interface NavBarProps {
 
 export function NavBar({ items, className }: NavBarProps) {
   const [activeTab, setActiveTab] = useState(items[0].name);
-  const [isMobile, setIsMobile] = useState(false);
+  const [, setIsMobile] = useState(false);
+
+  // Scroll-spy: observe which section is currently in view
+  const updateActiveFromScroll = useCallback(() => {
+    // If at the very top, set Home
+    if (window.scrollY < 100) {
+      setActiveTab(items[0].name);
+      return;
+    }
+
+    // Check each nav item that has a hash URL
+    const sectionItems = items.filter((item) => item.url.startsWith("#") && item.url.length > 1);
+
+    let bestMatch: string | null = null;
+    let bestDistance = Infinity;
+
+    for (const item of sectionItems) {
+      const sectionId = item.url.slice(1);
+      const el = document.getElementById(sectionId);
+      if (!el) continue;
+
+      const rect = el.getBoundingClientRect();
+      // Section is "active" when its top is near or above viewport center
+      const distance = Math.abs(rect.top - window.innerHeight * 0.35);
+
+      if (rect.top <= window.innerHeight * 0.5 && distance < bestDistance) {
+        bestDistance = distance;
+        bestMatch = item.name;
+      }
+    }
+
+    // If we're near the bottom of the page, activate the last item
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+      const lastItem = sectionItems[sectionItems.length - 1];
+      if (lastItem) {
+        setActiveTab(lastItem.name);
+        return;
+      }
+    }
+
+    if (bestMatch) {
+      setActiveTab(bestMatch);
+    }
+  }, [items]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -28,8 +71,17 @@ export function NavBar({ items, className }: NavBarProps) {
 
     handleResize();
     window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
+
+    // Scroll spy listener
+    window.addEventListener("scroll", updateActiveFromScroll, { passive: true });
+    // Run once on mount
+    updateActiveFromScroll();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("scroll", updateActiveFromScroll);
+    };
+  }, [updateActiveFromScroll]);
 
   return (
     <div
@@ -49,7 +101,7 @@ export function NavBar({ items, className }: NavBarProps) {
               href={item.url}
               onClick={() => setActiveTab(item.name)}
               className={cn(
-                "relative cursor-pointer text-sm font-semibold px-6 py-2 rounded-full transition-colors",
+                "relative cursor-pointer text-sm font-semibold px-6 py-2 rounded-full transition-colors duration-300",
                 "text-foreground/80 hover:text-primary",
                 isActive && "bg-muted text-primary"
               )}
@@ -65,8 +117,8 @@ export function NavBar({ items, className }: NavBarProps) {
                   initial={false}
                   transition={{
                     type: "spring",
-                    stiffness: 300,
-                    damping: 30,
+                    stiffness: 350,
+                    damping: 35,
                   }}
                 >
                   <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-1 bg-primary rounded-t-full">

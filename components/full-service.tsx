@@ -27,24 +27,22 @@ const pillars = [
 
 export default function FullService() {
   return (
-    <section className="relative py-32">
+    <section className="relative py-28 md:py-36">
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
           <FadeIn>
             <div>
-              <span className="mb-4 block text-sm uppercase tracking-widest text-[#8b5cf6]">
-                Full-Service Ansatz
-              </span>
-              <h2 className="mb-6 text-4xl leading-tight font-bold text-white md:text-5xl">
-                Kein Flickenteppich.
+              <span className="section-label">Full-Service Ansatz</span>
+              <h2 className="section-heading leading-tight md:text-5xl">
+                Schluss mit Flickenteppich.
                 <br />
                 Ein Partner. Ein Prozess.
               </h2>
-              <p className="max-w-lg text-lg leading-relaxed text-[#94a3b8]">
-                Strategie, Design, Entwicklung und Automatisierung — alles unter
-                einem Dach. Keine Abstimmung zwischen fünf Dienstleistern. Keine
-                verlorene Zeit. Ein Team, das dein Projekt von der Idee bis zum
-                Wachstum begleitet.
+              <p className="section-body max-w-lg">
+                Stell dir vor: Ein Ansprechpartner, der Strategie, Design und
+                Technik versteht. Keine Abstimmung zwischen fünf
+                Dienstleistern. Kein Stille-Post-Effekt. Ein Team, das dein
+                Projekt von der Idee bis zum Wachstum begleitet.
               </p>
             </div>
           </FadeIn>
@@ -67,12 +65,8 @@ export default function FullService() {
                         <pillar.icon size={22} />
                       </div>
                       <div>
-                        <h3 className="mb-1 text-lg font-semibold text-white">
-                          {pillar.title}
-                        </h3>
-                        <p className="text-sm leading-relaxed text-[#94a3b8]">
-                          {pillar.description}
-                        </p>
+                        <h3 className="card-title mb-1">{pillar.title}</h3>
+                        <p className="card-body">{pillar.description}</p>
                       </div>
                     </div>
                   </div>

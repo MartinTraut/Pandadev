@@ -1,6 +1,12 @@
 "use client";
 
-import { motion, useMotionValue, useTransform, useSpring } from "framer-motion";
+import {
+  motion,
+  useMotionValue,
+  useTransform,
+  useSpring,
+  useMotionTemplate,
+} from "framer-motion";
 import {
   Zap,
   Layout,
@@ -22,8 +28,6 @@ const containerVariants = {
   },
 };
 
-const smoothEase = [0.16, 1, 0.3, 1] as const;
-
 const cardVariants = {
   hidden: { opacity: 0, y: 50, scale: 0.97 },
   visible: {
@@ -32,7 +36,7 @@ const cardVariants = {
     scale: 1,
     transition: {
       duration: 0.8,
-      ease: smoothEase,
+      ease: [0.16, 1, 0.3, 1] as const,
     },
   },
 };
@@ -40,9 +44,9 @@ const cardVariants = {
 /* ─── Automation Flow Visual ─────────────────────────────────── */
 function AutomationVisual() {
   const nodes = [
-    { label: "Trigger", x: 12, y: 18, color: "#8b5cf6" },
-    { label: "Filter", x: 42, y: 32, color: "#6366f1" },
-    { label: "Action", x: 72, y: 18, color: "#3b82f6" },
+    { label: "Trigger", x: 10, y: 15, color: "#8b5cf6" },
+    { label: "Filter", x: 42, y: 55, color: "#6366f1" },
+    { label: "Action", x: 75, y: 15, color: "#3b82f6" },
   ];
 
   return (
@@ -54,15 +58,17 @@ function AutomationVisual() {
           <div className="h-[7px] w-[7px] rounded-full bg-[#febc2e]/50" />
           <div className="h-[7px] w-[7px] rounded-full bg-[#28c840]/50" />
         </div>
-        <span className="text-[9px] tracking-wider text-white/20 uppercase">Workflow</span>
+        <span className="text-[9px] tracking-wider text-white/20 uppercase">
+          Workflow
+        </span>
       </div>
 
       {/* Flow canvas */}
-      <div className="relative h-[calc(100%-2rem)] p-4">
+      <div className="relative min-h-[140px] h-[calc(100%-2rem)] p-4">
         {/* Connection lines */}
-        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 60">
+        <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 70">
           <motion.path
-            d="M 22 22 C 32 22, 32 36, 42 36"
+            d="M 20 20 C 30 20, 32 58, 42 58"
             fill="none"
             stroke="url(#flow-grad)"
             strokeWidth="0.6"
@@ -73,7 +79,7 @@ function AutomationVisual() {
             transition={{ duration: 1.2, delay: 0.6, ease: "easeOut" }}
           />
           <motion.path
-            d="M 52 36 C 62 36, 62 22, 72 22"
+            d="M 52 58 C 62 58, 65 20, 75 20"
             fill="none"
             stroke="url(#flow-grad)"
             strokeWidth="0.6"
@@ -103,7 +109,7 @@ function AutomationVisual() {
             transition={{
               duration: 0.5,
               delay: 0.4 + i * 0.2,
-              ease: [0.16, 1, 0.3, 1],
+              ease: [0.16, 1, 0.3, 1] as const,
             }}
           >
             <div
@@ -115,7 +121,9 @@ function AutomationVisual() {
                 style={{ backgroundColor: node.color }}
               />
             </div>
-            <span className="text-[8px] tracking-wide text-white/30">{node.label}</span>
+            <span className="text-[8px] tracking-wide text-white/30">
+              {node.label}
+            </span>
           </motion.div>
         ))}
 
@@ -126,12 +134,12 @@ function AutomationVisual() {
             className="absolute h-1 w-1 rounded-full bg-[#8b5cf6]/40"
             style={{
               left: `${20 + i * 25}%`,
-              top: `${25 + (i % 2) * 15}%`,
+              top: `${30 + (i % 2) * 10}%`,
             }}
             animate={{
-              opacity: [0, 0.6, 0],
-              x: [0, 30, 60],
-              y: [0, i % 2 ? -8 : 8, 0],
+              opacity: [0, 0.8, 0],
+              x: [0, 15, 30],
+              y: [0, i % 2 ? -4 : 4, 0],
             }}
             transition={{
               duration: 3,
@@ -162,7 +170,7 @@ function SeoVisual() {
             <span className="text-[8px] text-emerald-400/50">+42%</span>
           </div>
         </div>
-        <div className="flex items-end gap-[3px] px-3 pt-3 pb-3">
+        <div className="flex h-24 items-end gap-[3px] px-3 pt-3 pb-3">
           {bars.map((h, i) => (
             <motion.div
               key={i}
@@ -179,7 +187,7 @@ function SeoVisual() {
               transition={{
                 duration: 0.6,
                 delay: 0.1 + i * 0.06,
-                ease: [0.16, 1, 0.3, 1],
+                ease: [0.16, 1, 0.3, 1] as const,
               }}
             />
           ))}
@@ -227,7 +235,7 @@ function BrandVisual() {
               transition={{
                 delay: 0.3 + i * 0.1,
                 duration: 0.4,
-                ease: [0.16, 1, 0.3, 1],
+                ease: [0.16, 1, 0.3, 1] as const,
               }}
             />
           ))}
@@ -242,14 +250,12 @@ function WebPreviewVisual() {
   return (
     <div className="mt-auto pt-6">
       <div className="overflow-hidden rounded-xl border border-white/[0.04] bg-[#0a0a12]/80">
-        {/* Browser chrome */}
         <div className="flex h-6 items-center gap-1.5 border-b border-white/[0.04] px-3">
           <div className="h-[6px] w-[6px] rounded-full bg-[#ff5f57]/30" />
           <div className="h-[6px] w-[6px] rounded-full bg-[#febc2e]/30" />
           <div className="h-[6px] w-[6px] rounded-full bg-[#28c840]/30" />
           <div className="ml-3 h-[10px] flex-1 rounded bg-white/[0.03]" />
         </div>
-        {/* Page skeleton */}
         <div className="space-y-2 p-3">
           <div className="h-8 w-full rounded-lg bg-gradient-to-r from-[#8b5cf6]/[0.08] to-transparent" />
           <div className="flex gap-2">
@@ -272,16 +278,18 @@ function MobileVisual() {
   return (
     <div className="mt-auto flex justify-center pt-6">
       <div className="relative h-[160px] w-[78px] rounded-2xl border border-white/[0.06] bg-[#0a0a12]/80 shadow-[0_0_40px_rgba(139,92,246,0.04)]">
-        {/* Notch */}
         <div className="absolute top-1.5 left-1/2 h-[5px] w-10 -translate-x-1/2 rounded-full bg-white/[0.05]" />
-        {/* Screen content */}
         <div className="mt-5 space-y-1.5 px-2">
           <motion.div
-            className="h-2.5 w-full rounded bg-[#8b5cf6]/12"
+            className="h-2.5 rounded bg-[#8b5cf6]/12"
             initial={{ width: 0 }}
             whileInView={{ width: "100%" }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            transition={{
+              duration: 0.8,
+              delay: 0.3,
+              ease: [0.16, 1, 0.3, 1] as const,
+            }}
           />
           <div className="h-2 w-4/5 rounded bg-white/[0.04]" />
           <div className="h-2 w-3/5 rounded bg-white/[0.03]" />
@@ -291,22 +299,34 @@ function MobileVisual() {
             <div className="h-5 flex-1 rounded bg-white/[0.03]" />
           </div>
         </div>
-        {/* Home indicator */}
         <div className="absolute bottom-1.5 left-1/2 h-[3px] w-8 -translate-x-1/2 rounded-full bg-white/[0.08]" />
       </div>
     </div>
   );
 }
 
-/* ─── Software Terminal Visual ───────────────────────────────── */
+/* ─── Software Terminal Visual (stagger-based) ───────────────── */
+const terminalContainerVariant = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.25, delayChildren: 0.3 } },
+};
+const terminalLineVariant = {
+  hidden: { opacity: 0, x: -8 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] as const },
+  },
+};
+
 function TerminalVisual() {
   const lines = [
-    { prompt: true, text: "npm run build", delay: 0.3 },
-    { prompt: false, text: "✓ Compiled successfully", delay: 0.7, color: "text-emerald-400/50" },
-    { prompt: false, text: "✓ Types validated", delay: 0.9, color: "text-emerald-400/50" },
-    { prompt: false, text: "✓ 12 routes generated", delay: 1.1, color: "text-emerald-400/50" },
-    { prompt: true, text: "deploying to production...", delay: 1.4 },
-    { prompt: false, text: "● Live at app.client.de", delay: 1.8, color: "text-[#8b5cf6]/60" },
+    { prompt: true, text: "npm run build" },
+    { prompt: false, text: "✓ Compiled successfully", color: "text-emerald-400/50" },
+    { prompt: false, text: "✓ Types validated", color: "text-emerald-400/50" },
+    { prompt: false, text: "✓ 12 routes generated", color: "text-emerald-400/50" },
+    { prompt: true, text: "deploying to production..." },
+    { prompt: false, text: "● Live at app.client.de", color: "text-[#8b5cf6]/60" },
   ];
 
   return (
@@ -317,21 +337,22 @@ function TerminalVisual() {
           <div className="h-[7px] w-[7px] rounded-full bg-[#febc2e]/50" />
           <div className="h-[7px] w-[7px] rounded-full bg-[#28c840]/50" />
         </div>
-        <span className="text-[9px] tracking-wider text-white/20 uppercase">Terminal</span>
+        <span className="text-[9px] tracking-wider text-white/20 uppercase">
+          Terminal
+        </span>
       </div>
-      <div className="space-y-1.5 p-3.5 font-mono text-[10px] leading-relaxed">
+      <motion.div
+        className="space-y-1.5 p-3.5 font-mono text-[10px] leading-relaxed"
+        variants={terminalContainerVariant}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+      >
         {lines.map((line, i) => (
           <motion.div
             key={i}
             className="flex items-center gap-2"
-            initial={{ opacity: 0, x: -8 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{
-              duration: 0.4,
-              delay: line.delay,
-              ease: [0.16, 1, 0.3, 1],
-            }}
+            variants={terminalLineVariant}
           >
             {line.prompt && (
               <span className="text-[#8b5cf6]/40 select-none">$</span>
@@ -342,9 +363,13 @@ function TerminalVisual() {
         <motion.span
           className="inline-block h-3 w-[5px] bg-[#8b5cf6]/50"
           animate={{ opacity: [1, 0] }}
-          transition={{ duration: 0.8, repeat: Infinity, repeatType: "reverse" }}
+          transition={{
+            duration: 0.8,
+            repeat: Infinity,
+            repeatType: "reverse",
+          }}
         />
-      </div>
+      </motion.div>
     </div>
   );
 }
@@ -352,7 +377,10 @@ function TerminalVisual() {
 /* ─── Everything Card (center) ───────────────────────────────── */
 function EverythingCard() {
   return (
-    <motion.div className="relative min-h-[280px] md:min-h-0" variants={cardVariants}>
+    <motion.div
+      className="relative min-h-[280px] md:min-h-0"
+      variants={cardVariants}
+    >
       <div className="relative h-full rounded-2xl border-[0.75px] border-white/[0.04] p-2 md:rounded-3xl md:p-2.5">
         <GlowingEffect
           spread={40}
@@ -363,30 +391,37 @@ function EverythingCard() {
           borderWidth={3}
         />
         <div className="relative flex h-full items-center justify-center overflow-hidden rounded-xl bg-[#111122] p-10 md:rounded-2xl">
-          {/* Ambient orbs */}
           <div className="pointer-events-none absolute inset-0">
             <div className="absolute top-1/2 left-1/2 h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#8b5cf6]/[0.07] blur-[80px]" />
             <div className="absolute top-1/4 left-1/3 h-32 w-32 rounded-full bg-[#3b82f6]/[0.08] blur-[60px]" />
             <div className="absolute right-1/4 bottom-1/3 h-24 w-24 rounded-full bg-[#6366f1]/[0.06] blur-[40px]" />
           </div>
-
-          {/* Subtle grid */}
-          <div className="pointer-events-none absolute inset-0 opacity-[0.03]" style={{
-            backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
-            backgroundSize: "32px 32px",
-          }} />
-
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.03]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)",
+              backgroundSize: "32px 32px",
+            }}
+          />
           <div className="relative z-10 text-center">
             <motion.h3
               className="text-3xl leading-[1.15] font-bold tracking-tight text-white/90 md:text-[2.75rem]"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+              transition={{
+                duration: 0.8,
+                delay: 0.3,
+                ease: [0.16, 1, 0.3, 1] as const,
+              }}
             >
               <span className="italic">Alles</span> aus
               <br />
-              einer <span className="bg-gradient-to-r from-[#8b5cf6] to-[#3b82f6] bg-clip-text text-transparent">Hand</span>
+              einer{" "}
+              <span className="bg-gradient-to-r from-[#8b5cf6] to-[#3b82f6] bg-clip-text text-transparent">
+                Hand
+              </span>
             </motion.h3>
           </div>
         </div>
@@ -395,7 +430,7 @@ function EverythingCard() {
   );
 }
 
-/* ─── Service Card ───────────────────────────────────────────── */
+/* ─── Service Card with reactive spotlight ───────────────────── */
 function ServiceCard({
   icon: Icon,
   title,
@@ -424,6 +459,9 @@ function ServiceCard({
     damping: 30,
   });
 
+  // Reactive motion template — updates as mouse moves without React re-renders
+  const spotlightBg = useMotionTemplate`radial-gradient(400px circle at ${spotlightX}% ${spotlightY}%, ${accentColor}08, transparent 60%)`;
+
   function handleMouseMove(e: React.MouseEvent) {
     if (!cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
@@ -433,9 +471,7 @@ function ServiceCard({
 
   return (
     <motion.div
-      className={`relative min-h-[300px] md:min-h-0 ${
-        colSpan === 2 ? "md:col-span-2" : ""
-      }`}
+      className={`relative ${colSpan === 2 ? "md:min-h-0 md:col-span-2" : "min-h-[280px] md:min-h-0"}`}
       variants={cardVariants}
     >
       <div className="relative h-full rounded-2xl border-[0.75px] border-white/[0.04] p-2 md:rounded-3xl md:p-2.5">
@@ -452,17 +488,14 @@ function ServiceCard({
           onMouseMove={handleMouseMove}
           className="group relative flex h-full flex-col overflow-hidden rounded-xl border-[0.75px] border-white/[0.04] bg-[#12121e] shadow-sm md:rounded-2xl"
         >
-          {/* Spotlight follow effect */}
+          {/* Reactive spotlight follow effect */}
           <motion.div
             className="pointer-events-none absolute inset-0 z-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-            style={{
-              background: `radial-gradient(400px circle at ${spotlightX.get()}% ${spotlightY.get()}%, ${accentColor}08, transparent 60%)`,
-            }}
+            style={{ background: spotlightBg }}
           />
 
           {/* Content */}
           <div className="relative z-10 p-7 pb-2">
-            {/* Icon */}
             <div
               className="mb-6 flex h-10 w-10 items-center justify-center rounded-xl transition-colors duration-500"
               style={{
@@ -470,23 +503,23 @@ function ServiceCard({
                 border: `1px solid ${accentColor}15`,
               }}
             >
-              <Icon size={18} style={{ color: accentColor }} className="opacity-70" />
+              <Icon
+                size={18}
+                style={{ color: accentColor }}
+                className="opacity-70"
+              />
             </div>
 
-            {/* Title */}
-            <h3 className="mb-3 text-[1.1rem] leading-tight font-semibold tracking-[-0.02em] text-white/95">
-              {title}
-            </h3>
+            <h3 className="card-title mb-3">{title}</h3>
 
-            {/* Description */}
-            <p className="max-w-xs text-[0.84rem] leading-[1.65] text-white/35">
-              {description}
-            </p>
+            <p className="card-body max-w-xs">{description}</p>
 
-            {/* Link */}
             <div className="mt-5 flex items-center gap-2 text-[0.8rem] text-white/25 transition-all duration-500 group-hover:gap-3 group-hover:text-white/50">
               <span>Mehr erfahren</span>
-              <ArrowRight size={13} className="transition-transform duration-500 group-hover:translate-x-0.5" />
+              <ArrowRight
+                size={13}
+                className="transition-transform duration-500 group-hover:translate-x-0.5"
+              />
             </div>
           </div>
 
@@ -506,8 +539,7 @@ function ServiceCard({
 /* ─── Main Grid ──────────────────────────────────────────────── */
 export default function ServicesGrid() {
   return (
-    <section id="services" className="relative py-36">
-      {/* Subtle ambient background */}
+    <section id="services" className="relative py-28 md:py-36">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute top-0 left-1/2 h-[500px] w-[800px] -translate-x-1/2 bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.03),transparent_70%)]" />
       </div>
@@ -515,26 +547,32 @@ export default function ServicesGrid() {
       <div className="relative mx-auto max-w-6xl px-6">
         {/* Section header */}
         <motion.div
-          className="mb-24 text-center"
+          className="mb-20 text-center"
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] as const }}
         >
           <div className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-white/[0.06] bg-white/[0.02] px-5 py-2.5 backdrop-blur-sm">
             <div className="relative h-1.5 w-1.5">
               <div className="absolute inset-0 rounded-full bg-[#8b5cf6]" />
               <div className="absolute inset-0 animate-ping rounded-full bg-[#8b5cf6] opacity-75" />
             </div>
-            <span className="text-[0.8rem] tracking-wide text-white/40">Services</span>
+            <span className="text-[0.8rem] tracking-wide text-white/40">
+              Services
+            </span>
           </div>
-          <h2 className="text-[2.5rem] leading-[1.1] font-bold tracking-[-0.03em] text-white md:text-[3.5rem] lg:text-[4rem]">
+          <h2 className="section-heading text-[2.5rem] tracking-[-0.03em] md:text-[3.5rem] lg:text-[4rem]">
             Was wir für dich
             <br />
             <span className="bg-gradient-to-r from-white/90 via-white/60 to-white/40 bg-clip-text text-transparent">
               umsetzen
             </span>
           </h2>
+          <p className="section-body mx-auto mt-4 max-w-2xl">
+            Von der ersten Idee bis zum laufenden System — alles aus einer Hand,
+            ohne Reibungsverluste.
+          </p>
         </motion.div>
 
         {/* Bento Grid */}
@@ -545,7 +583,6 @@ export default function ServicesGrid() {
           whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}
         >
-          {/* Row 1 */}
           <ServiceCard
             icon={Zap}
             title="Automatisierungen"
@@ -566,11 +603,10 @@ export default function ServicesGrid() {
             <SeoVisual />
           </ServiceCard>
 
-          {/* Row 2 */}
           <ServiceCard
             icon={PenTool}
             title="Branding"
-            description="Markenidentität mit Wieder&shy;erkennungswert und strategischer Tiefe."
+            description="Markenidentität mit Wiedererkennungswert und strategischer Tiefe."
             colSpan={1}
             accentColor="#f59e0b"
           >
@@ -589,7 +625,6 @@ export default function ServicesGrid() {
             <WebPreviewVisual />
           </ServiceCard>
 
-          {/* Row 3 */}
           <ServiceCard
             icon={Smartphone}
             title="App Entwicklung"

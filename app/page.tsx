@@ -10,6 +10,10 @@ import Trust from "@/components/trust";
 import CtaSection from "@/components/cta-section";
 import Footer from "@/components/footer";
 
+function SectionDivider() {
+  return <div className="gradient-line mx-auto max-w-5xl" />;
+}
+
 export default function Home() {
   return (
     <>
@@ -17,10 +21,13 @@ export default function Home() {
       <main>
         <Hero />
         <Clients />
+        <SectionDivider />
         <ServicesGrid />
         <FullService />
+        <SectionDivider />
         <Automation />
         <Projects />
+        <SectionDivider />
         <TechStack />
         <Trust />
         <CtaSection />

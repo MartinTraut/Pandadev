@@ -24,7 +24,7 @@ export default function Footer() {
               height={36}
               className="h-8 w-auto"
             />
-            <p className="mt-4 max-w-sm text-sm leading-relaxed text-[#94a3b8]">
+            <p className="card-body mt-4 max-w-sm">
               Full-Service Digital Partner. Strategie, Design, Automatisierung
               und Entwicklung aus einer Hand. Zukunftssichere Lösungen,
               benutzerzentriert und Made in Germany.

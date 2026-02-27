@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Calendar, Zap, Code, Sparkles } from "lucide-react";
 import DisplayCards from "@/components/ui/display-cards";
 import { BackgroundGradientAnimation } from "@/components/ui/background-gradient-animation";
@@ -67,8 +67,8 @@ const wordVariants = {
 };
 
 function AnimatedHeadline() {
-  const line1 = "A Full-Service";
-  const line2words = ["Digital", "Partner"];
+  const line1 = "Dein digitaler";
+  const line2words = ["Wachstums", "partner."];
 
   return (
     <h1 className="mb-8 text-5xl leading-[1.05] font-bold tracking-tight text-white md:text-7xl lg:text-8xl">
@@ -95,8 +95,8 @@ function AnimatedHeadline() {
             variants={wordVariants}
             initial="hidden"
             animate="visible"
-            className={`inline-block ${i > 0 ? "ml-[0.3em]" : ""} ${
-              word === "Partner"
+            className={`inline-block ${
+              word === "partner."
                 ? "bg-gradient-to-r from-[#8b5cf6] via-[#a78bfa] to-[#3b82f6] bg-clip-text text-transparent"
                 : ""
             }`}
@@ -110,6 +110,9 @@ function AnimatedHeadline() {
 }
 
 export default function Hero() {
+  const { scrollY } = useScroll();
+  const cardsY = useTransform(scrollY, [0, 500], [0, -60]);
+
   return (
     <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
       {/* Animated gradient background */}
@@ -131,29 +134,33 @@ export default function Hero() {
         />
       </div>
 
-      {/* Dark overlay to keep text readable */}
+      {/* Dark overlay */}
       <div className="pointer-events-none absolute inset-0 z-[2] bg-[#0b0b0f]/40" />
 
       {/* Grid overlay */}
       <div className="grid-bg pointer-events-none absolute inset-0 z-[3] opacity-30" />
 
       {/* Content */}
-      <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-6 lg:grid-cols-2">
+      <div className="relative z-10 mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 px-6 lg:grid-cols-2">
         {/* Left: Text */}
         <div className="text-center lg:text-left">
-          {/* Badge */}
+          {/* Scarcity Badge */}
           <motion.div
             initial={{ opacity: 0, y: 20, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.1, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-white/[0.08] bg-white/[0.03] px-4 py-2 backdrop-blur-sm"
+            transition={{
+              duration: 0.7,
+              delay: 0.1,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
+            className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-[#8b5cf6]/20 bg-[#8b5cf6]/[0.04] px-4 py-2 backdrop-blur-sm"
           >
             <div className="relative h-2 w-2">
               <div className="absolute inset-0 rounded-full bg-[#8b5cf6]" />
               <div className="absolute inset-0 animate-ping rounded-full bg-[#8b5cf6] opacity-75" />
             </div>
-            <span className="text-sm text-[#94a3b8]">
-              Full-Service Digital Partner
+            <span className="text-sm text-[#a78bfa]">
+              Nur 3 neue Projekte pro Monat
             </span>
           </motion.div>
 
@@ -164,18 +171,26 @@ export default function Hero() {
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.0, ease: [0.25, 0.46, 0.45, 0.94] }}
+            transition={{
+              duration: 0.8,
+              delay: 1.0,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
             className="mb-12 max-w-lg text-lg leading-relaxed text-[#94a3b8] md:text-xl lg:mx-0"
           >
-            Strategie, Design, Automatisierung und Entwicklung aus einer Hand.
-            Dein strategischer Internet-Partner für digitales Wachstum.
+            Wir vereinen Strategie, Design und Technologie — damit dein
+            Unternehmen online nicht nur sichtbar wird, sondern wächst.
           </motion.p>
 
           {/* CTAs */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+            transition={{
+              duration: 0.8,
+              delay: 1.2,
+              ease: [0.25, 0.46, 0.45, 0.94],
+            }}
             className="flex flex-col items-center gap-4 sm:flex-row lg:justify-start"
           >
             <a
@@ -193,16 +208,21 @@ export default function Hero() {
               className="inline-flex items-center gap-2.5 rounded-full border border-white/[0.1] px-8 py-4 font-medium text-white transition-all hover:bg-white/[0.05]"
             >
               <Calendar size={18} />
-              Strategiegespräch buchen
+              Kostenloses Erstgespräch
             </a>
           </motion.div>
         </div>
 
-        {/* Right: Display Cards */}
+        {/* Right: Display Cards with parallax */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.85, y: 40 }}
-          animate={{ opacity: 1, scale: 1, y: 0 }}
-          transition={{ duration: 1.0, delay: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+          style={{ y: cardsY }}
+          initial={{ opacity: 0, scale: 0.85 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{
+            duration: 1.0,
+            delay: 0.8,
+            ease: [0.25, 0.46, 0.45, 0.94],
+          }}
           className="hidden lg:flex lg:items-center lg:justify-center"
         >
           <DisplayCards cards={heroCards} />
@@ -210,7 +230,7 @@ export default function Hero() {
       </div>
 
       {/* Bottom fade */}
-      <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-[4] h-40 bg-gradient-to-t from-[#0b0b0f] to-transparent" />
+      <div className="pointer-events-none absolute right-0 bottom-0 left-0 z-[4] h-40 bg-gradient-to-t from-[#0b0b0f] to-transparent" />
 
       {/* Scroll indicator */}
       <motion.div

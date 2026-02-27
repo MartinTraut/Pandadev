@@ -15,15 +15,15 @@ const clients = [
 
 export default function Clients() {
   return (
-    <section className="relative py-20">
+    <section className="relative py-16">
       <div className="mx-auto max-w-7xl px-6">
         <FadeIn>
-          <p className="mb-12 text-center text-sm uppercase tracking-widest text-[#64748b]">
-            Vertraut von Unternehmen aus verschiedenen Branchen
+          <p className="section-label mb-12 text-center">
+            Vertrauen von 20+ Unternehmen aus Handwerk, Gastro, Tech &amp; Dienstleistung
           </p>
         </FadeIn>
         <FadeIn delay={0.15}>
-          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-8">
+          <div className="flex flex-wrap items-center justify-center gap-x-16 gap-y-10">
             {clients.map((client) => (
               <div
                 key={client.name}
