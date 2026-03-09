@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  motion,
-  useMotionValue,
-  useTransform,
-  useSpring,
-  useMotionTemplate,
-} from "framer-motion";
+import { motion } from "framer-motion";
 import {
   Zap,
   Layout,
@@ -18,24 +12,22 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import { GlowingEffect } from "@/components/ui/glowing-effect";
-import { useRef } from "react";
 
 /* ─── Stagger animation variants ─────────────────────────────── */
 const containerVariants = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.07, delayChildren: 0.15 },
+    transition: { staggerChildren: 0.05, delayChildren: 0.1 },
   },
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 50, scale: 0.97 },
+  hidden: { opacity: 0, y: 30 },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
     transition: {
-      duration: 0.8,
+      duration: 0.5,
       ease: [0.16, 1, 0.3, 1] as const,
     },
   },
@@ -50,7 +42,7 @@ function AutomationVisual() {
   ];
 
   return (
-    <div className="absolute top-4 right-4 bottom-4 hidden w-[52%] overflow-hidden rounded-2xl border border-white/[0.03] bg-[#0a0a12]/90 backdrop-blur-sm md:block">
+    <div className="absolute top-4 right-4 bottom-4 hidden w-[52%] overflow-hidden rounded-2xl border border-white/[0.03] bg-[#0a0a12]/90 md:block">
       {/* Toolbar */}
       <div className="flex h-8 items-center justify-between border-b border-white/[0.04] px-3.5">
         <div className="flex items-center gap-1.5">
@@ -127,25 +119,14 @@ function AutomationVisual() {
           </motion.div>
         ))}
 
-        {/* Floating data particles */}
+        {/* Static data particles */}
         {[0, 1, 2].map((i) => (
-          <motion.div
+          <div
             key={`particle-${i}`}
-            className="absolute h-1 w-1 rounded-full bg-[#8b5cf6]/40"
+            className="absolute h-1 w-1 rounded-full bg-[#8b5cf6]/30"
             style={{
-              left: `${20 + i * 25}%`,
-              top: `${30 + (i % 2) * 10}%`,
-            }}
-            animate={{
-              opacity: [0, 0.8, 0],
-              x: [0, 15, 30],
-              y: [0, i % 2 ? -4 : 4, 0],
-            }}
-            transition={{
-              duration: 3,
-              delay: i * 0.8,
-              repeat: Infinity,
-              ease: "easeInOut",
+              left: `${25 + i * 20}%`,
+              top: `${35 + (i % 2) * 8}%`,
             }}
           />
         ))}
@@ -330,7 +311,7 @@ function TerminalVisual() {
   ];
 
   return (
-    <div className="absolute top-4 right-4 bottom-4 hidden w-[50%] overflow-hidden rounded-2xl border border-white/[0.03] bg-[#0a0a12]/90 backdrop-blur-sm md:block">
+    <div className="absolute top-4 right-4 bottom-4 hidden w-[50%] overflow-hidden rounded-2xl border border-white/[0.03] bg-[#0a0a12]/90 md:block">
       <div className="flex h-8 items-center justify-between border-b border-white/[0.04] px-3.5">
         <div className="flex items-center gap-1.5">
           <div className="h-[7px] w-[7px] rounded-full bg-[#ff5f57]/50" />
@@ -360,14 +341,8 @@ function TerminalVisual() {
             <span className={line.color || "text-white/30"}>{line.text}</span>
           </motion.div>
         ))}
-        <motion.span
-          className="inline-block h-3 w-[5px] bg-[#8b5cf6]/50"
-          animate={{ opacity: [1, 0] }}
-          transition={{
-            duration: 0.8,
-            repeat: Infinity,
-            repeatType: "reverse",
-          }}
+        <span
+          className="inline-block h-3 w-[5px] bg-[#8b5cf6]/50 animate-pulse"
         />
       </motion.div>
     </div>
@@ -446,29 +421,6 @@ function ServiceCard({
   children?: React.ReactNode;
   accentColor?: string;
 }) {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(0.5);
-  const mouseY = useMotionValue(0.5);
-
-  const spotlightX = useSpring(useTransform(mouseX, [0, 1], [0, 100]), {
-    stiffness: 200,
-    damping: 30,
-  });
-  const spotlightY = useSpring(useTransform(mouseY, [0, 1], [0, 100]), {
-    stiffness: 200,
-    damping: 30,
-  });
-
-  // Reactive motion template — updates as mouse moves without React re-renders
-  const spotlightBg = useMotionTemplate`radial-gradient(400px circle at ${spotlightX}% ${spotlightY}%, ${accentColor}08, transparent 60%)`;
-
-  function handleMouseMove(e: React.MouseEvent) {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    mouseX.set((e.clientX - rect.left) / rect.width);
-    mouseY.set((e.clientY - rect.top) / rect.height);
-  }
-
   return (
     <motion.div
       className={`relative ${colSpan === 2 ? "md:min-h-0 md:col-span-2" : "min-h-[280px] md:min-h-0"}`}
@@ -484,15 +436,8 @@ function ServiceCard({
           borderWidth={3}
         />
         <div
-          ref={cardRef}
-          onMouseMove={handleMouseMove}
           className="group relative flex h-full flex-col overflow-hidden rounded-xl border-[0.75px] border-white/[0.04] bg-[#12121e] shadow-sm md:rounded-2xl"
         >
-          {/* Reactive spotlight follow effect */}
-          <motion.div
-            className="pointer-events-none absolute inset-0 z-0 opacity-0 transition-opacity duration-500 group-hover:opacity-100"
-            style={{ background: spotlightBg }}
-          />
 
           {/* Content */}
           <div className="relative z-10 p-7 pb-2">
@@ -553,7 +498,7 @@ export default function ServicesGrid() {
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] as const }}
         >
-          <div className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-white/[0.06] bg-white/[0.02] px-5 py-2.5 backdrop-blur-sm">
+          <div className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-white/[0.06] bg-white/[0.02] px-5 py-2.5">
             <div className="relative h-1.5 w-1.5">
               <div className="absolute inset-0 rounded-full bg-[#8b5cf6]" />
               <div className="absolute inset-0 animate-ping rounded-full bg-[#8b5cf6] opacity-75" />

@@ -3,6 +3,9 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
+const LOOP_COUNT = 20;
+const MAX_PIXEL_RATIO = 1.5;
+
 const AnimatedShaderBackground = ({
   className,
 }: {
@@ -14,9 +17,15 @@ const AnimatedShaderBackground = ({
     const container = containerRef.current;
     if (!container) return;
 
+    const dpr = Math.min(window.devicePixelRatio, MAX_PIXEL_RATIO);
+
     const scene = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    const renderer = new THREE.WebGLRenderer({
+      antialias: false,
+      powerPreference: "low-power",
+    });
+    renderer.setPixelRatio(dpr);
     renderer.setSize(container.clientWidth, container.clientHeight);
     container.appendChild(renderer.domElement);
 
@@ -25,8 +34,8 @@ const AnimatedShaderBackground = ({
         iTime: { value: 0 },
         iResolution: {
           value: new THREE.Vector2(
-            container.clientWidth,
-            container.clientHeight
+            container.clientWidth * dpr,
+            container.clientHeight * dpr
           ),
         },
       },
@@ -40,6 +49,7 @@ const AnimatedShaderBackground = ({
         uniform vec2 iResolution;
 
         #define NUM_OCTAVES 3
+        #define LOOP_COUNT ${LOOP_COUNT}.0
 
         float rand(vec2 n) {
           return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
@@ -77,9 +87,9 @@ const AnimatedShaderBackground = ({
 
           float f = 2.0 + fbm(p + vec2(iTime * 5.0, 0.0)) * 0.5;
 
-          for (float i = 0.0; i < 35.0; i++) {
+          for (float i = 0.0; i < LOOP_COUNT; i++) {
             v = p + cos(i * i + (iTime + p.x * 0.08) * 0.025 + i * vec2(13.0, 11.0)) * 3.5 + vec2(sin(iTime * 3.0 + i) * 0.003, cos(iTime * 3.5 - i) * 0.003);
-            float tailNoise = fbm(v + vec2(iTime * 0.5, i)) * 0.3 * (1.0 - (i / 35.0));
+            float tailNoise = fbm(v + vec2(iTime * 0.5, i)) * 0.3 * (1.0 - (i / LOOP_COUNT));
             vec4 auroraColors = vec4(
               0.1 + 0.3 * sin(i * 0.2 + iTime * 0.4),
               0.3 + 0.5 * cos(i * 0.3 + iTime * 0.5),
@@ -87,11 +97,11 @@ const AnimatedShaderBackground = ({
               1.0
             );
             vec4 currentContribution = auroraColors * exp(sin(i * i + iTime * 0.8)) / length(max(v, vec2(v.x * f * 0.015, v.y * 1.5)));
-            float thinnessFactor = smoothstep(0.0, 1.0, i / 35.0) * 0.6;
+            float thinnessFactor = smoothstep(0.0, 1.0, i / LOOP_COUNT) * 0.6;
             o += currentContribution * (1.0 + tailNoise * 0.8) * thinnessFactor;
           }
 
-          o = tanh(pow(o / 100.0, vec4(1.6)));
+          o = tanh(pow(o / 60.0, vec4(1.6)));
           gl_FragColor = o * 1.5;
         }
       `,
@@ -102,29 +112,50 @@ const AnimatedShaderBackground = ({
     scene.add(mesh);
 
     let frameId: number;
+    let isVisible = true;
+
     const animate = () => {
+      if (!isVisible) return;
       material.uniforms.iTime.value += 0.016;
       renderer.render(scene, camera);
       frameId = requestAnimationFrame(animate);
     };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const wasVisible = isVisible;
+        isVisible = entry.isIntersecting;
+        if (isVisible && !wasVisible) {
+          frameId = requestAnimationFrame(animate);
+        }
+      },
+      { threshold: 0 }
+    );
+    observer.observe(container);
+
     animate();
 
     const handleResize = () => {
       if (!container) return;
+      const newDpr = Math.min(window.devicePixelRatio, MAX_PIXEL_RATIO);
+      renderer.setPixelRatio(newDpr);
       renderer.setSize(container.clientWidth, container.clientHeight);
       material.uniforms.iResolution.value.set(
-        container.clientWidth,
-        container.clientHeight
+        container.clientWidth * newDpr,
+        container.clientHeight * newDpr
       );
     };
     window.addEventListener("resize", handleResize);
 
     return () => {
+      isVisible = false;
       cancelAnimationFrame(frameId);
+      observer.disconnect();
       window.removeEventListener("resize", handleResize);
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
+      renderer.forceContextLoss();
       geometry.dispose();
       material.dispose();
       renderer.dispose();

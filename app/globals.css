@@ -178,11 +178,18 @@ html {
   100% { background-position: 200% center; }
 }
 
-.animate-first { animation: moveVertical 30s ease infinite; }
-.animate-second { animation: moveInCircle 20s reverse infinite; }
-.animate-third { animation: moveInCircle 40s linear infinite; }
-.animate-fourth { animation: moveHorizontal 40s ease infinite; }
-.animate-fifth { animation: moveInCircle 20s ease infinite; }
+.animate-first { animation: moveVertical 30s ease infinite; will-change: transform; }
+.animate-second { animation: moveInCircle 20s reverse infinite; will-change: transform; }
+.animate-third { animation: moveInCircle 40s linear infinite; will-change: transform; }
+.animate-fourth { animation: moveHorizontal 40s ease infinite; will-change: transform; }
+.animate-fifth { animation: moveInCircle 20s ease infinite; will-change: transform; }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-first, .animate-second, .animate-third, .animate-fourth, .animate-fifth,
+  .animate-gradient, .animate-float, .text-shimmer {
+    animation: none !important;
+  }
+}
 
 .text-shimmer {
   background: linear-gradient(

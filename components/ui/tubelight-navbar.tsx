@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { LucideIcon } from "lucide-react";
@@ -17,45 +17,60 @@ interface NavBarProps {
   className?: string;
 }
 
+interface CachedSection {
+  name: string;
+  offsetTop: number;
+}
+
 export function NavBar({ items, className }: NavBarProps) {
   const [activeTab, setActiveTab] = useState(items[0].name);
   const [, setIsMobile] = useState(false);
 
-  // Scroll-spy: observe which section is currently in view
+  const sectionCacheRef = useRef<CachedSection[]>([]);
+  const rafIdRef = useRef<number | null>(null);
+
+  const buildSectionCache = useCallback(() => {
+    const sectionItems = items.filter(
+      (item) => item.url.startsWith("#") && item.url.length > 1
+    );
+    sectionCacheRef.current = sectionItems
+      .map((item) => {
+        const el = document.getElementById(item.url.slice(1));
+        if (!el) return null;
+        return { name: item.name, offsetTop: el.offsetTop };
+      })
+      .filter(Boolean) as CachedSection[];
+  }, [items]);
+
   const updateActiveFromScroll = useCallback(() => {
-    // If at the very top, set Home
-    if (window.scrollY < 100) {
+    const scrollY = window.scrollY;
+
+    if (scrollY < 100) {
       setActiveTab(items[0].name);
       return;
     }
 
-    // Check each nav item that has a hash URL
-    const sectionItems = items.filter((item) => item.url.startsWith("#") && item.url.length > 1);
+    const viewportThreshold = scrollY + window.innerHeight * 0.35;
+    const sections = sectionCacheRef.current;
+
+    if (window.innerHeight + scrollY >= document.body.offsetHeight - 100) {
+      const lastSection = sections[sections.length - 1];
+      if (lastSection) {
+        setActiveTab(lastSection.name);
+        return;
+      }
+    }
 
     let bestMatch: string | null = null;
     let bestDistance = Infinity;
 
-    for (const item of sectionItems) {
-      const sectionId = item.url.slice(1);
-      const el = document.getElementById(sectionId);
-      if (!el) continue;
+    for (const section of sections) {
+      const distanceFromTop = section.offsetTop - scrollY;
+      const distance = Math.abs(section.offsetTop - viewportThreshold);
 
-      const rect = el.getBoundingClientRect();
-      // Section is "active" when its top is near or above viewport center
-      const distance = Math.abs(rect.top - window.innerHeight * 0.35);
-
-      if (rect.top <= window.innerHeight * 0.5 && distance < bestDistance) {
+      if (distanceFromTop <= window.innerHeight * 0.5 && distance < bestDistance) {
         bestDistance = distance;
-        bestMatch = item.name;
-      }
-    }
-
-    // If we're near the bottom of the page, activate the last item
-    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
-      const lastItem = sectionItems[sectionItems.length - 1];
-      if (lastItem) {
-        setActiveTab(lastItem.name);
-        return;
+        bestMatch = section.name;
       }
     }
 
@@ -65,23 +80,34 @@ export function NavBar({ items, className }: NavBarProps) {
   }, [items]);
 
   useEffect(() => {
+    const handleScroll = () => {
+      if (rafIdRef.current !== null) return;
+      rafIdRef.current = requestAnimationFrame(() => {
+        updateActiveFromScroll();
+        rafIdRef.current = null;
+      });
+    };
+
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
+      buildSectionCache();
     };
 
     handleResize();
-    window.addEventListener("resize", handleResize);
+    buildSectionCache();
 
-    // Scroll spy listener
-    window.addEventListener("scroll", updateActiveFromScroll, { passive: true });
-    // Run once on mount
+    window.addEventListener("resize", handleResize);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     updateActiveFromScroll();
 
     return () => {
       window.removeEventListener("resize", handleResize);
-      window.removeEventListener("scroll", updateActiveFromScroll);
+      window.removeEventListener("scroll", handleScroll);
+      if (rafIdRef.current !== null) {
+        cancelAnimationFrame(rafIdRef.current);
+      }
     };
-  }, [updateActiveFromScroll]);
+  }, [updateActiveFromScroll, buildSectionCache]);
 
   return (
     <div

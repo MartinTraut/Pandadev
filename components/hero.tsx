@@ -38,20 +38,6 @@ const heroCards = [
   },
 ];
 
-const letterVariants = {
-  hidden: { opacity: 0, y: 40, filter: "blur(8px)" },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: {
-      delay: 0.5 + i * 0.04,
-      duration: 0.6,
-      ease: [0.25, 0.46, 0.45, 0.94] as const,
-    },
-  }),
-};
-
 const wordVariants = {
   hidden: { opacity: 0, y: 30, filter: "blur(6px)" },
   visible: (i: number) => ({
@@ -59,7 +45,7 @@ const wordVariants = {
     y: 0,
     filter: "blur(0px)",
     transition: {
-      delay: 0.5 + i * 0.08,
+      delay: 0.5 + i * 0.1,
       duration: 0.7,
       ease: [0.25, 0.46, 0.45, 0.94] as const,
     },
@@ -67,23 +53,22 @@ const wordVariants = {
 };
 
 function AnimatedHeadline() {
-  const line1 = "Dein digitaler";
+  const line1words = ["Dein", "digitaler"];
   const line2words = ["Wachstums", "partner."];
 
   return (
     <h1 className="mb-8 text-5xl leading-[1.05] font-bold tracking-tight text-white md:text-7xl lg:text-8xl">
       <span className="block overflow-hidden">
-        {line1.split("").map((char, i) => (
+        {line1words.map((word, i) => (
           <motion.span
-            key={i}
+            key={word}
             custom={i}
-            variants={letterVariants}
+            variants={wordVariants}
             initial="hidden"
             animate="visible"
-            className="inline-block"
-            style={{ whiteSpace: char === " " ? "pre" : undefined }}
+            className="mr-[0.25em] inline-block"
           >
-            {char}
+            {word}
           </motion.span>
         ))}
       </span>
@@ -91,14 +76,14 @@ function AnimatedHeadline() {
         {line2words.map((word, i) => (
           <motion.span
             key={word}
-            custom={i}
+            custom={i + line1words.length}
             variants={wordVariants}
             initial="hidden"
             animate="visible"
             className={`inline-block ${
               word === "partner."
                 ? "bg-gradient-to-r from-[#8b5cf6] via-[#a78bfa] to-[#3b82f6] bg-clip-text text-transparent"
-                : ""
+                : "mr-[0.25em]"
             }`}
           >
             {word}

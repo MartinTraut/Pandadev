@@ -96,14 +96,14 @@ function ProjectCard({
             <div className="absolute inset-0 bg-gradient-to-t from-[#13131d] via-[#13131d]/20 to-transparent" />
 
             {/* Project number */}
-            <div className="absolute top-4 left-4 flex h-8 w-8 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.04] backdrop-blur-md">
+            <div className="absolute top-4 left-4 flex h-8 w-8 items-center justify-center rounded-full border border-white/[0.08] bg-[#13131d]/80">
               <span className="text-xs font-medium tabular-nums text-white/50">
                 {String(index + 1).padStart(2, "0")}
               </span>
             </div>
 
             {/* Arrow on hover */}
-            <div className="absolute right-4 bottom-4 flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] bg-white/[0.06] text-white/70 backdrop-blur-md transition-all duration-500 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 group-hover:bg-[#8b5cf6]/20 group-hover:border-[#8b5cf6]/30">
+            <div className="absolute right-4 bottom-4 flex h-10 w-10 items-center justify-center rounded-full border border-white/[0.08] bg-[#13131d]/80 text-white/70 transition-all duration-500 translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 group-hover:bg-[#8b5cf6]/20 group-hover:border-[#8b5cf6]/30">
               <ArrowUpRight size={16} />
             </div>
           </div>

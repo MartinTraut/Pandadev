@@ -4,6 +4,54 @@ import { memo, useCallback, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import { animate } from "motion/react";
 
+// Shared global event bus – one scroll + one pointermove listener for ALL
+// GlowingEffect instances instead of per-instance listeners.
+type Subscriber = (e: { x: number; y: number } | null) => void;
+
+const subscribers = new Set<Subscriber>();
+let globalListenersAttached = false;
+let lastPointer = { x: 0, y: 0 };
+let pointerThrottleTimer: ReturnType<typeof setTimeout> | null = null;
+
+const POINTER_THROTTLE_MS = 50;
+
+function notifySubscribers(e: { x: number; y: number } | null) {
+  subscribers.forEach((fn) => fn(e));
+}
+
+function attachGlobalListeners() {
+  if (globalListenersAttached) return;
+  globalListenersAttached = true;
+
+  window.addEventListener(
+    "scroll",
+    () => notifySubscribers(null),
+    { passive: true }
+  );
+
+  document.body.addEventListener(
+    "pointermove",
+    (e: PointerEvent) => {
+      lastPointer = { x: e.x, y: e.y };
+
+      if (pointerThrottleTimer) return;
+      pointerThrottleTimer = setTimeout(() => {
+        pointerThrottleTimer = null;
+        notifySubscribers(lastPointer);
+      }, POINTER_THROTTLE_MS);
+    },
+    { passive: true }
+  );
+}
+
+function subscribe(fn: Subscriber) {
+  subscribers.add(fn);
+  attachGlobalListeners();
+  return () => {
+    subscribers.delete(fn);
+  };
+}
+
 interface GlowingEffectProps {
   blur?: number;
   inactiveZone?: number;
@@ -34,10 +82,11 @@ const GlowingEffect = memo(
     const lastPosition = useRef({ x: 0, y: 0 });
     const animationFrameRef = useRef<number>(0);
     const currentAnimationRef = useRef<ReturnType<typeof animate> | null>(null);
+    const isVisibleRef = useRef(false);
 
     const handleMove = useCallback(
-      (e?: MouseEvent | { x: number; y: number }) => {
-        if (!containerRef.current) return;
+      (e?: { x: number; y: number } | null) => {
+        if (!isVisibleRef.current || !containerRef.current) return;
 
         if (animationFrameRef.current) {
           cancelAnimationFrame(animationFrameRef.current);
@@ -45,7 +94,7 @@ const GlowingEffect = memo(
 
         animationFrameRef.current = requestAnimationFrame(() => {
           const element = containerRef.current;
-          if (!element) return;
+          if (!element || !isVisibleRef.current) return;
 
           const { left, top, width, height } =
             element.getBoundingClientRect();
@@ -90,7 +139,6 @@ const GlowingEffect = memo(
             ((targetAngle - currentAngle + 180) % 360) - 180;
           const newAngle = currentAngle + angleDiff;
 
-          // Cancel any running animation for smoother transitions
           if (currentAnimationRef.current) {
             currentAnimationRef.current.stop();
           }
@@ -107,26 +155,52 @@ const GlowingEffect = memo(
       [inactiveZone, proximity, movementDuration]
     );
 
+    // IntersectionObserver – pause all work when element is off-screen
+    useEffect(() => {
+      if (disabled) return;
+      const element = containerRef.current;
+      if (!element) return;
+
+      const observer = new IntersectionObserver(
+        ([entry]) => {
+          isVisibleRef.current = entry.isIntersecting;
+          if (!entry.isIntersecting) {
+            element.style.setProperty("--active", "0");
+            if (currentAnimationRef.current) {
+              currentAnimationRef.current.stop();
+              currentAnimationRef.current = null;
+            }
+            if (animationFrameRef.current) {
+              cancelAnimationFrame(animationFrameRef.current);
+              animationFrameRef.current = 0;
+            }
+          }
+        },
+        { threshold: 0 }
+      );
+
+      observer.observe(element);
+      return () => observer.disconnect();
+    }, [disabled]);
+
+    // Subscribe to the shared global event bus
     useEffect(() => {
       if (disabled) return;
 
-      const handleScroll = () => handleMove();
-      const handlePointerMove = (e: PointerEvent) => handleMove(e);
-
-      window.addEventListener("scroll", handleScroll, { passive: true });
-      document.body.addEventListener("pointermove", handlePointerMove, {
-        passive: true,
+      const unsubscribe = subscribe((e) => {
+        handleMove(e);
       });
 
       return () => {
+        unsubscribe();
         if (animationFrameRef.current) {
           cancelAnimationFrame(animationFrameRef.current);
+          animationFrameRef.current = 0;
         }
         if (currentAnimationRef.current) {
           currentAnimationRef.current.stop();
+          currentAnimationRef.current = null;
         }
-        window.removeEventListener("scroll", handleScroll);
-        document.body.removeEventListener("pointermove", handlePointerMove);
       };
     }, [handleMove, disabled]);
 

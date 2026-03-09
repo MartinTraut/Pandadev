@@ -62,7 +62,7 @@ export default function Automation() {
                 <GlowingEffect
                   spread={40}
                   glow
-                  disabled={false}
+                  disabled
                   proximity={64}
                   inactiveZone={0.01}
                   borderWidth={3}
