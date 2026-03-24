@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useCallback, useState } from "react";
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { motion, useInView } from "framer-motion";
 import { ArrowRight, ChevronDown, Star } from "lucide-react";
 import Image from "next/image";
 
@@ -238,17 +238,11 @@ function HeroStats() {
 
 export default function Hero() {
   const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ["start start", "end start"],
-  });
-  const imageY = useTransform(scrollYProgress, [0, 1], [0, 60]);
-  const contentY = useTransform(scrollYProgress, [0, 1], [0, 30]);
 
   return (
     <section
       ref={sectionRef}
-      className="relative min-h-[100svh] flex items-center overflow-hidden"
+      className="relative min-h-[100svh] md:flex md:items-center overflow-hidden"
     >
       {/* Background */}
       <div className="absolute inset-0 bg-[#050505]">
@@ -268,7 +262,7 @@ export default function Hero() {
       <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-6 pt-24 md:pt-28 lg:pt-20 pb-16 md:pb-28 w-full">
         <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
           {/* Content */}
-          <motion.div style={{ y: contentY }} className="text-center md:text-left">
+          <motion.div className="text-center md:text-left">
 
             <h1 className="text-[2.25rem] sm:text-5xl md:text-6xl lg:text-[4.25rem] xl:text-[5rem] font-bold leading-[0.95] tracking-[-0.03em] mb-7">
               <motion.span
@@ -401,12 +395,12 @@ export default function Hero() {
       {/* Bottom fade */}
       <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#050505] to-transparent pointer-events-none" />
 
-      {/* Scroll Indicator */}
+      {/* Scroll Indicator — desktop only */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 1.6 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+        className="absolute bottom-8 left-1/2 -translate-x-1/2 flex-col items-center gap-2 hidden md:flex"
       >
         <span className="text-[10px] text-white/20 uppercase tracking-[0.2em]">
           Entdecken
