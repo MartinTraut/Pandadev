@@ -159,7 +159,7 @@ function HeroStats() {
   const inView = useInView(ref, { once: true });
 
   return (
-    <div ref={ref} className="flex items-center gap-6 sm:gap-8">
+    <div ref={ref} className="flex items-center justify-center md:justify-start gap-6 sm:gap-8">
       {stats.map((stat, i) => (
         <div key={i} className="flex items-center gap-6 sm:gap-8">
           {i > 0 && (
@@ -281,9 +281,9 @@ export default function Hero() {
               initial={{ opacity: 0, y: 16, filter: "blur(6px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="text-base md:text-lg text-white/40 leading-relaxed max-w-lg mb-10"
+              className="text-base md:text-lg text-white/40 leading-relaxed max-w-lg mb-10 text-center md:text-left"
             >
-              Wir vereinen Strategie, Design und Technologie — damit dein
+              Wir vereinen Strategie, Design und Technologie, damit dein
               Unternehmen online nicht nur sichtbar wird, sondern wächst.
             </motion.p>
 
@@ -320,12 +320,12 @@ export default function Hero() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             transition={{ duration: 1, delay: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
             style={{ y: imageY }}
-            className="relative hidden md:block"
+            className="relative"
           >
-            <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-white/[0.06]">
+            <div className="relative aspect-[16/9] md:aspect-[3/4] rounded-2xl overflow-hidden border border-white/[0.06]">
               <Image
                 src="/hero-team.png"
-                alt="Aaron Hermann und Philipp Stapf — Gründer von P&A Development"
+                alt="Aaron Hermann und Philipp Stapf, Gründer von P&A Development"
                 fill
                 className="object-cover"
                 priority
@@ -348,7 +348,7 @@ export default function Hero() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 1.2 }}
-              className="absolute -left-6 bottom-20 glass-strong rounded-xl px-4 py-3 shadow-2xl"
+              className="absolute -left-6 bottom-20 glass-strong rounded-xl px-4 py-3 shadow-2xl hidden md:block"
             >
               <div className="flex items-center gap-2">
                 <div className="h-2 w-2 rounded-full bg-emerald-400" />
@@ -362,7 +362,7 @@ export default function Hero() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6, delay: 1.4 }}
-              className="absolute -right-4 top-16 glass-strong rounded-xl px-4 py-3 shadow-2xl"
+              className="absolute -right-4 top-16 glass-strong rounded-xl px-4 py-3 shadow-2xl hidden md:block"
             >
               <div className="flex items-center gap-2">
                 <span className="text-lg font-bold text-[#8b5cf6]">5.0</span>

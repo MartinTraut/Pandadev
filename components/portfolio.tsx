@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import {
   motion,
   useScroll,
@@ -16,7 +16,7 @@ const projects = [
     title: "Rockstroh GmbH",
     category: "Custom Application",
     description:
-      "Individuelle Enterprise-Applikation für komplexe Geschäftsprozesse — von der Anforderungsanalyse bis zum erfolgreichen Rollout.",
+      "Individuelle Enterprise-Applikation für komplexe Geschäftsprozesse, von der Anforderungsanalyse bis zum erfolgreichen Rollout.",
     image: "/projects/rockstroh.png",
     results: ["Prozesse digitalisiert", "Effizienz +60%", "Vollautomatisiert"],
     services: ["Software", "Backend", "Cloud"],
@@ -52,7 +52,7 @@ const projects = [
     title: "Automobile Reinhardt",
     category: "Website",
     description:
-      "Online-Auftritt für ein Autohaus — responsiv, schnell und auf Conversion optimiert.",
+      "Online-Auftritt für ein Autohaus, responsiv, schnell und auf Conversion optimiert.",
     image: "/projects/automobile.png",
     results: ["+120% Online-Anfragen", "Mobile optimiert", "SEO Top 5"],
     services: ["Webdesign", "SEO", "Performance"],
@@ -61,7 +61,7 @@ const projects = [
     title: "Zum Lobmüller",
     category: "Custom App",
     description:
-      "Maßgeschneiderte Zeiterfassungs-App für die Gastronomie — intuitiv, zuverlässig und funktionsreich.",
+      "Maßgeschneiderte Zeiterfassungs-App für die Gastronomie, intuitiv, zuverlässig und funktionsreich.",
     image: "/projects/lobmueller.png",
     results: ["20h/Woche gespart", "Papierfrei", "Echtzeit-Tracking"],
     services: ["App", "Backend", "UI/UX"],
@@ -155,14 +155,22 @@ export default function Portfolio() {
   const [selectedProject, setSelectedProject] = useState<
     (typeof projects)[0] | null
   >(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
   });
 
-  const rotateX = useTransform(scrollYProgress, [0, 0.3], [25, 0]);
-  const scale = useTransform(scrollYProgress, [0, 0.3], [0.9, 1]);
+  const rotateX = useTransform(scrollYProgress, [0, 0.3], isMobile ? [0, 0] : [25, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.3], isMobile ? [1, 1] : [0.9, 1]);
   const opacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
 
   return (

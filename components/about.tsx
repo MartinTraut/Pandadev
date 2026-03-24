@@ -22,15 +22,15 @@ export default function About() {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Image */}
           <motion.div
-            initial={{ opacity: 0, x: -40 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
+            initial={{ opacity: 0, x: -40, filter: "blur(8px)" }}
+            animate={inView ? { opacity: 1, x: 0, filter: "blur(0px)" } : {}}
             transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
             className="relative"
           >
-            <div className="relative aspect-[4/3] lg:aspect-[4/5] rounded-2xl overflow-hidden">
+            <div className="relative aspect-[3/2] lg:aspect-[4/5] rounded-2xl overflow-hidden">
               <Image
                 src="/team.png"
-                alt="Aaron Hermann und Philipp Stapf — Gründer von P&A Development"
+                alt="Aaron Hermann und Philipp Stapf, Gründer von P&A Development"
                 fill
                 className="object-cover"
               />
@@ -70,7 +70,7 @@ export default function About() {
               className="space-y-4 mb-8"
             >
               <p className="text-base md:text-lg text-white/50 leading-relaxed">
-                Wir sind Aaron und Philipp — zwei Entwickler und Designer aus
+                Wir sind Aaron und Philipp, zwei Entwickler und Designer aus
                 der Region Heilbronn, die sich nicht damit zufriedengeben, nur
                 hübsche Websites zu bauen. Wir wollen Ergebnisse sehen.
               </p>

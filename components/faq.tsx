@@ -9,7 +9,7 @@ const faqItems = [
   {
     question: "Was kostet ein Projekt bei P&A Development?",
     answer:
-      "Jedes Projekt ist individuell — genau wie deine Anforderungen. Nach einem kostenlosen Erstgespräch erstellen wir dir ein transparentes Angebot ohne versteckte Kosten. Kleine Websites starten im niedrigen vierstelligen Bereich, individuelle Software-Projekte werden nach Aufwand kalkuliert.",
+      "Jedes Projekt ist individuell, genau wie deine Anforderungen. Nach einem kostenlosen Erstgespräch erstellen wir dir ein transparentes Angebot ohne versteckte Kosten. Kleine Websites starten im niedrigen vierstelligen Bereich, individuelle Software-Projekte werden nach Aufwand kalkuliert.",
   },
   {
     question: "Wie lange dauert ein Projekt?",
@@ -19,22 +19,22 @@ const faqItems = [
   {
     question: "Welche Leistungen bietet ihr an?",
     answer:
-      "Wir sind ein Full-Service Digital Partner: Software Entwicklung, App Entwicklung, Webdesign, Online Shops, Branding & Grafik-Design, Online Marketing (SEO, GEO, Ads), KI-Automatisierung und AR/XR Entwicklung — alles aus einer Hand.",
+      "Wir sind ein Full-Service Digital Partner: Software Entwicklung, App Entwicklung, Webdesign, Online Shops, Branding & Grafik-Design, Online Marketing (SEO, GEO, Ads), KI-Automatisierung und AR/XR Entwicklung. Alles aus einer Hand.",
   },
   {
     question: "Bietet ihr Support nach dem Launch?",
     answer:
-      "Selbstverständlich. Wir bieten langfristige Wartung, regelmäßige Updates und kontinuierlichen Support. Dein Projekt ist nach dem Launch nicht vergessen — wir optimieren und entwickeln weiter.",
+      "Selbstverständlich. Wir bieten langfristige Wartung, regelmäßige Updates und kontinuierlichen Support. Dein Projekt ist nach dem Launch nicht vergessen, wir optimieren und entwickeln weiter.",
   },
   {
     question: "Könnt ihr bestehende Projekte übernehmen oder erweitern?",
     answer:
-      "Ja, wir übernehmen und modernisieren bestehende Anwendungen. Ob neue Features, Performance-Optimierung oder die Integration von KI — wir analysieren den Ist-Zustand und entwickeln einen klaren Plan.",
+      "Ja, wir übernehmen und modernisieren bestehende Anwendungen. Ob neue Features, Performance-Optimierung oder die Integration von KI, wir analysieren den Ist-Zustand und entwickeln einen klaren Plan.",
   },
   {
     question: "Wie starte ich ein Projekt mit euch?",
     answer:
-      "Ganz einfach: Nutze unser Kontaktformular oder ruf uns direkt an. In einem kostenlosen 30-minütigen Erstgespräch besprechen wir deine Ideen, Ziele und Anforderungen — unverbindlich und ehrlich.",
+      "Ganz einfach: Nutze unser Kontaktformular oder ruf uns direkt an. In einem kostenlosen 30-minütigen Erstgespräch besprechen wir deine Ideen, Ziele und Anforderungen, unverbindlich und ehrlich.",
   },
 ];
 
@@ -105,7 +105,7 @@ function AccordionItem({
           <span
             className={cn(
               "text-xs font-mono tabular-nums transition-colors duration-300 shrink-0",
-              isOpen ? "text-[#8b5cf6]" : "text-white/20"
+              isOpen ? "text-[#8b5cf6]" : "text-white/30"
             )}
           >
             {String(index + 1).padStart(2, "0")}
@@ -115,7 +115,7 @@ function AccordionItem({
           <span
             className={cn(
               "flex-1 text-[15px] md:text-base font-medium transition-colors duration-300 pr-4",
-              isOpen ? "text-white" : "text-white/60"
+              isOpen ? "text-white" : "text-white/70"
             )}
           >
             {item.question}
@@ -178,7 +178,7 @@ function AccordionItem({
                     delay: 0.15,
                     ease: [0.16, 1, 0.3, 1],
                   }}
-                  className="text-sm text-white/40 leading-[1.75]"
+                  className="text-sm text-white/50 leading-[1.75]"
                 >
                   {item.answer}
                 </motion.p>
@@ -231,7 +231,7 @@ export default function Faq() {
             </span>
           </h2>
           <p className="text-base text-white/30 mt-4 max-w-lg mx-auto">
-            Die wichtigsten Fragen auf einen Blick — transparent und ehrlich.
+            Die wichtigsten Fragen auf einen Blick, transparent und ehrlich.
           </p>
         </motion.div>
 

@@ -1,6 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Zap,
   Layout,
@@ -27,12 +28,12 @@ const cardVariants = {
 
 function AutomationVisual() {
   const nodes = [
-    { label: "Trigger", x: 10, y: 15, color: "#8b5cf6" },
-    { label: "Filter", x: 42, y: 55, color: "#6366f1" },
-    { label: "Action", x: 75, y: 15, color: "#3b82f6" },
+    { label: "Trigger", x: 10, y: 12, color: "#8b5cf6" },
+    { label: "Filter", x: 42, y: 52, color: "#6366f1" },
+    { label: "Action", x: 75, y: 12, color: "#3b82f6" },
   ];
   return (
-    <div className="absolute top-4 right-4 bottom-4 hidden w-[52%] overflow-hidden rounded-2xl border border-white/[0.03] bg-[#0a0a12]/90 md:block">
+    <div className="hidden w-full flex-1 overflow-hidden rounded-2xl border border-white/[0.03] bg-[#0a0a12]/90 md:block">
       <div className="flex h-8 items-center justify-between border-b border-white/[0.04] px-3.5">
         <div className="flex items-center gap-1.5">
           <div className="h-[7px] w-[7px] rounded-full bg-[#ff5f57]/50" />
@@ -41,19 +42,19 @@ function AutomationVisual() {
         </div>
         <span className="text-[9px] tracking-wider text-white/20 uppercase">Workflow</span>
       </div>
-      <div className="relative min-h-[140px] h-[calc(100%-2rem)] p-4">
+      <div className="relative h-[calc(100%-2rem)] min-h-[160px] p-4">
         <svg className="absolute inset-0 h-full w-full" viewBox="0 0 100 70">
-          <motion.path d="M 20 20 C 30 20, 32 58, 42 58" fill="none" stroke="url(#fg)" strokeWidth="0.6" strokeDasharray="2 2" animate={{ pathLength: [0, 1, 0] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }} />
-          <motion.path d="M 52 58 C 62 58, 65 20, 75 20" fill="none" stroke="url(#fg)" strokeWidth="0.6" strokeDasharray="2 2" animate={{ pathLength: [0, 1, 0] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }} />
+          <motion.path d="M 20 18 C 30 18, 32 55, 42 55" fill="none" stroke="url(#fg)" strokeWidth="0.6" strokeDasharray="2 2" animate={{ pathLength: [0, 1, 0] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }} />
+          <motion.path d="M 52 55 C 62 55, 65 18, 75 18" fill="none" stroke="url(#fg)" strokeWidth="0.6" strokeDasharray="2 2" animate={{ pathLength: [0, 1, 0] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }} />
           <defs><linearGradient id="fg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.6" /><stop offset="100%" stopColor="#3b82f6" stopOpacity="0.6" /></linearGradient></defs>
         </svg>
         {nodes.map((n, i) => (
           <motion.div key={n.label} className="absolute flex flex-col items-center gap-1.5" style={{ left: `${n.x}%`, top: `${n.y}%` }}
             animate={{ scale: [1, 1.15, 1], opacity: [0.7, 1, 0.7] }} transition={{ duration: 2, repeat: Infinity, delay: i * 0.4 }}>
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg border border-white/[0.06]" style={{ backgroundColor: `${n.color}15` }}>
-              <div className="h-2 w-2 rounded-full" style={{ backgroundColor: n.color }} />
+            <div className="flex h-9 w-9 items-center justify-center rounded-lg border border-white/[0.06]" style={{ backgroundColor: `${n.color}15` }}>
+              <div className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: n.color }} />
             </div>
-            <span className="text-[8px] tracking-wide text-white/30">{n.label}</span>
+            <span className="text-[9px] tracking-wide text-white/30">{n.label}</span>
           </motion.div>
         ))}
       </div>
@@ -125,23 +126,29 @@ function WebPreviewVisual() {
 
 function MobileVisual() {
   return (
-    <div className="mt-auto flex justify-center pt-4 pb-2">
-      <div className="relative h-[220px] w-[108px] rounded-[1.5rem] border border-white/[0.06] bg-[#0a0a12]/80 shadow-[0_0_40px_rgba(99,102,241,0.06)]">
-        <div className="absolute top-2 left-1/2 h-[5px] w-12 -translate-x-1/2 rounded-full bg-white/[0.05]" />
-        <div className="mt-6 space-y-2 px-2.5">
-          <motion.div className="h-3 rounded bg-[#6366f1]/15"
-            animate={{ width: ["50%", "100%", "70%", "100%"] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }} />
-          <div className="h-2 w-4/5 rounded bg-white/[0.04]" />
-          <div className="h-2 w-3/5 rounded bg-white/[0.03]" />
-          <div className="mt-2.5 h-16 rounded-lg bg-white/[0.025]" />
-          <div className="flex gap-1">
-            <div className="h-6 flex-1 rounded-md bg-white/[0.03]" />
-            <div className="h-6 flex-1 rounded-md bg-white/[0.03]" />
+    <div className="flex flex-1 items-center justify-center py-2">
+      <div className="relative h-[280px] w-[136px] rounded-[1.75rem] border border-white/[0.06] bg-[#0a0a12]/80 shadow-[0_0_40px_rgba(99,102,241,0.06)]">
+        <div className="absolute top-2.5 left-1/2 h-[5px] w-14 -translate-x-1/2 rounded-full bg-white/[0.05]" />
+        <div className="mt-7 space-y-2.5 px-3">
+          <motion.div className="h-3.5 rounded-md bg-[#6366f1]/15"
+            animate={{ width: ["60%", "85%", "70%", "95%", "75%", "60%"] }}
+            transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} />
+          <div className="h-2.5 w-4/5 rounded bg-white/[0.04]" />
+          <div className="h-2.5 w-3/5 rounded bg-white/[0.03]" />
+          <div className="mt-3 h-20 rounded-lg bg-white/[0.025]" />
+          <div className="flex gap-1.5">
+            <div className="h-8 flex-1 rounded-md bg-white/[0.03]" />
+            <div className="h-8 flex-1 rounded-md bg-white/[0.03]" />
           </div>
-          <div className="h-2 w-2/3 rounded bg-white/[0.03]" />
+          <div className="h-2.5 w-2/3 rounded bg-white/[0.03]" />
+          <div className="flex gap-1.5">
+            <motion.div className="h-6 flex-1 rounded-md bg-[#6366f1]/10"
+              animate={{ opacity: [0.4, 0.8, 0.4] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }} />
+            <motion.div className="h-6 flex-1 rounded-md bg-[#6366f1]/10"
+              animate={{ opacity: [0.4, 0.8, 0.4] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 0.5 }} />
+          </div>
         </div>
-        <div className="absolute bottom-2 left-1/2 h-[4px] w-10 -translate-x-1/2 rounded-full bg-white/[0.08]" />
+        <div className="absolute bottom-2.5 left-1/2 h-[4px] w-12 -translate-x-1/2 rounded-full bg-white/[0.08]" />
       </div>
     </div>
   );
@@ -192,18 +199,18 @@ function TerminalVisual() {
     { prompt: false, text: "● Live at app.client.de", color: "text-[#8b5cf6]/60" },
   ];
   return (
-    <div className="absolute top-4 right-4 bottom-4 hidden w-[50%] overflow-hidden rounded-2xl border border-white/[0.03] bg-[#0a0a12]/90 md:block">
+    <div className="hidden w-full flex-1 overflow-hidden rounded-2xl border border-white/[0.03] bg-[#0a0a12]/90 md:block">
       <div className="flex h-8 items-center justify-between border-b border-white/[0.04] px-3.5">
         <div className="flex items-center gap-1.5"><div className="h-[7px] w-[7px] rounded-full bg-[#ff5f57]/50" /><div className="h-[7px] w-[7px] rounded-full bg-[#febc2e]/50" /><div className="h-[7px] w-[7px] rounded-full bg-[#28c840]/50" /></div>
         <span className="text-[9px] tracking-wider text-white/20 uppercase">Terminal</span>
       </div>
-      <div className="space-y-1.5 p-3.5 font-mono text-[10px] leading-relaxed">
+      <div className="space-y-2 p-4 font-mono text-[11px] leading-relaxed">
         {lines.map((l, i) => (
           <motion.div key={i} className="flex items-center gap-2" animate={{ opacity: [0.3, 1, 1, 0.3] }} transition={{ duration: 4, repeat: Infinity, delay: i * 0.5, times: [0, 0.1, 0.8, 1] }}>
-            {l.prompt && <span className="text-[#8b5cf6]/40 select-none">$</span>}<span className={l.color || "text-white/30"}>{l.text}</span>
+            {l.prompt && <span className="text-[#8b5cf6]/40 select-none">$</span>}<span className={l.color || "text-white/35"}>{l.text}</span>
           </motion.div>
         ))}
-        <motion.span className="inline-block h-3 w-[5px] bg-[#8b5cf6]/50" animate={{ opacity: [1, 0, 1] }} transition={{ duration: 1, repeat: Infinity }} />
+        <motion.span className="inline-block h-3.5 w-[5px] bg-[#8b5cf6]/50" animate={{ opacity: [1, 0, 1] }} transition={{ duration: 1, repeat: Infinity }} />
       </div>
     </div>
   );
@@ -211,7 +218,18 @@ function TerminalVisual() {
 
 /* ═══ CARDS ═══ */
 
+const rotatingWords = ["Hand", "Quelle", "Stelle", "Vision", "Strategie"];
+
 function EverythingCard({ className }: { className?: string }) {
+  const [wordIndex, setWordIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setWordIndex((prev) => (prev + 1) % rotatingWords.length);
+    }, 2800);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <motion.div className={`relative ${className || ""}`} variants={cardVariants}>
       <div className="relative h-full rounded-2xl border-[0.75px] border-white/[0.04] p-2 md:rounded-3xl md:p-2.5">
@@ -225,7 +243,21 @@ function EverythingCard({ className }: { className?: string }) {
           <div className="pointer-events-none absolute inset-0 opacity-[0.03]"
             style={{ backgroundImage: "linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)", backgroundSize: "32px 32px" }} />
           <h3 className="relative z-10 text-2xl md:text-3xl leading-[1.15] font-bold tracking-tight text-white/90 text-center">
-            <span className="italic">Alles</span> aus<br />einer <span className="bg-gradient-to-r from-[#8b5cf6] to-[#3b82f6] bg-clip-text text-transparent">Hand</span>
+            <span className="italic">Alles</span> aus<br />einer{" "}
+            <span className="inline-block relative overflow-hidden align-bottom" style={{ minWidth: "5ch" }}>
+              <AnimatePresence mode="wait">
+                <motion.span
+                  key={rotatingWords[wordIndex]}
+                  className="inline-block bg-gradient-to-r from-[#8b5cf6] to-[#3b82f6] bg-clip-text text-transparent"
+                  initial={{ opacity: 0, filter: "blur(8px)", y: 12 }}
+                  animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                  exit={{ opacity: 0, filter: "blur(8px)", y: -12 }}
+                  transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  {rotatingWords[wordIndex]}
+                </motion.span>
+              </AnimatePresence>
+            </span>
           </h3>
         </div>
       </div>
@@ -240,22 +272,26 @@ function ServiceCard({
   children?: React.ReactNode; accentColor?: string; className?: string;
 }) {
   const isWide = className.includes("col-span-2");
+  const isTall = className.includes("row-span-2");
   return (
     <motion.div className={`relative ${className}`} variants={cardVariants}>
       <div className="relative h-full rounded-2xl border-[0.75px] border-white/[0.04] p-2 md:rounded-3xl md:p-2.5">
         <GlowingEffect spread={40} glow disabled={false} proximity={64} inactiveZone={0.01} borderWidth={3} />
-        <div className="group relative flex h-full flex-col overflow-hidden rounded-xl border-[0.75px] border-white/[0.04] bg-[#12121e] shadow-sm md:rounded-2xl">
-          <div className="relative z-10 p-6 pb-3">
+        <div className={`group relative flex h-full overflow-hidden rounded-xl border-[0.75px] border-white/[0.04] bg-[#12121e] shadow-sm md:rounded-2xl ${isWide ? "md:flex-row" : "flex-col"}`}>
+          <div className={`relative z-10 p-6 ${isWide ? "flex flex-col justify-start md:w-[48%] md:shrink-0 pb-6" : isTall ? "pb-2" : "pb-3"}`}>
             <div className="flex items-center gap-3 mb-3">
-              <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg" style={{ backgroundColor: `${accentColor}10`, border: `1px solid ${accentColor}15` }}>
-                <Icon size={16} style={{ color: accentColor }} className="opacity-70" />
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg" style={{ backgroundColor: `${accentColor}10`, border: `1px solid ${accentColor}15` }}>
+                <Icon size={17} style={{ color: accentColor }} className="opacity-80" />
               </div>
-              <h3 className="text-[15px] font-semibold text-white leading-tight">{title}</h3>
+              <h3 className="text-base font-semibold text-white leading-tight">{title}</h3>
             </div>
-            <p className="text-[13px] leading-relaxed text-white/40">{description}</p>
+            <p className="text-sm leading-relaxed text-white/50">{description}</p>
           </div>
-          {children && !isWide ? <div className="relative z-10 flex flex-1 flex-col px-6 pb-4">{children}</div> : null}
-          {children && isWide ? children : null}
+          {children && isWide ? (
+            <div className="relative z-10 flex flex-1 flex-col p-4 md:py-4 md:pr-4 md:pl-0">{children}</div>
+          ) : children ? (
+            <div className="relative z-10 flex flex-1 flex-col px-6 pb-5">{children}</div>
+          ) : null}
         </div>
       </div>
     </motion.div>
@@ -279,19 +315,19 @@ export default function Services() {
           <h2 className="text-[2.5rem] md:text-[3.5rem] lg:text-[4rem] font-bold leading-[1.1] tracking-[-0.03em]">
             Was wir für dich<br /><span className="bg-gradient-to-r from-white/90 via-white/60 to-white/40 bg-clip-text text-transparent">umsetzen</span>
           </h2>
-          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/40">Von der ersten Idee bis zum laufenden System — alles aus einer Hand, ohne Reibungsverluste.</p>
+          <p className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/40">Von der ersten Idee bis zum laufenden System. Alles aus einer Hand, ohne Reibungsverluste.</p>
         </motion.div>
 
         {/*
           Tetris Bento Grid — md:grid-cols-3, row spans for puzzle fit
           Layout map (desktop):
-          [Automation  ][Automation  ][SEO         ]
-          [Branding    ][Everything  ][SEO         ]  ← SEO spans 2 rows
-          [Webdesign   ][App         ][Shops       ]
+          [Automation  ][Automation  ][App         ]
+          [Branding    ][Everything  ][App         ] ← row-span-2
+          [Webdesign   ][SEO         ][Shops       ]
           [Software    ][Software    ][AR/XR       ]
         */}
         <motion.div
-          className="grid grid-cols-1 gap-3 md:grid-cols-3 md:auto-rows-[minmax(180px,auto)]"
+          className="grid grid-cols-1 gap-3 md:grid-cols-3 md:auto-rows-[minmax(220px,auto)]"
           variants={containerVariants} initial="hidden" whileInView="visible"
           viewport={{ once: true, margin: "-80px" }}>
 

@@ -18,7 +18,7 @@ const posts = [
   {
     title: "5 Fehler bei der Digitalisierung von KMU vermeiden",
     description:
-      "Die häufigsten Stolperfallen bei der digitalen Transformation kleiner und mittelständischer Unternehmen — und wie du sie umgehst.",
+      "Die häufigsten Stolperfallen bei der digitalen Transformation kleiner und mittelständischer Unternehmen, und wie du sie umgehst.",
     date: "17. März 2026",
     image: "/blog/digitalisierung.png",
     slug: "5-fehler-bei-der-digitalisierung-von-kmu-vermeiden",

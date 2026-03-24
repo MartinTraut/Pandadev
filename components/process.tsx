@@ -27,14 +27,14 @@ const steps = [
   {
     number: "02", title: "Konzept & Strategie", subtitle: "Analyse",
     icon: Lightbulb, accent: "#6366f1",
-    description: "Wir analysieren dein Marktumfeld, definieren die Zielgruppe und entwickeln eine maßgeschneiderte digitale Strategie — bevor eine Zeile Code geschrieben wird.",
+    description: "Wir analysieren dein Marktumfeld, definieren die Zielgruppe und entwickeln eine maßgeschneiderte digitale Strategie, bevor eine Zeile Code geschrieben wird.",
     visual: "bars" as const, visualData: [{ label: "Marktanalyse", value: 90 }, { label: "Zielgruppenforschung", value: 85 }, { label: "Strategieentwicklung", value: 95 }],
     checks: ["Datenbasierte Analyse", "Klare Meilensteine", "Messbare KPIs"],
   },
   {
     number: "03", title: "Design & Umsetzung", subtitle: "Kreation",
     icon: Pen, accent: "#3b82f6",
-    description: "Unser Team bringt die Strategie zum Leben. Pixel-perfektes Design, sauberer Code, regelmäßige Feedback-Runden — bis alles sitzt.",
+    description: "Unser Team bringt die Strategie zum Leben. Pixel-perfektes Design, sauberer Code, regelmäßige Feedback-Runden, bis alles sitzt.",
     visual: "flow" as const, visualData: ["Entwurf", "Feedback", "Revision", "Final"],
     checks: ["Iteratives Design", "Regelmäßige Updates", "Deine Freigabe zählt"],
   },

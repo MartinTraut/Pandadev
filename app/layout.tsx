@@ -106,7 +106,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="de" className="dark">
+    <html lang="de" className="dark" style={{ overflowX: "clip" }}>
       <head>
         <script
           type="application/ld+json"
@@ -115,6 +115,7 @@ export default function RootLayout({
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        style={{ overflowX: "clip" }}
       >
         {children}
       </body>
