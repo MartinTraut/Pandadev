@@ -202,17 +202,16 @@ function HeroStats() {
   const inView = useInView(ref, { once: true });
 
   return (
-    <div ref={ref} className="flex items-center justify-center md:justify-start gap-4 sm:gap-6 md:gap-8">
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 12 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.6, delay: 1.1, ease: [0.16, 1, 0.3, 1] }}
+      className="flex items-start justify-center md:justify-start gap-4 sm:gap-6 md:gap-8"
+    >
       {stats.map((stat, i) => (
-        <motion.div
+        <div
           key={i}
-          initial={{ opacity: 0, y: 12 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{
-            duration: 0.6,
-            delay: 1.1 + i * 0.15,
-            ease: [0.16, 1, 0.3, 1],
-          }}
           className="text-center md:text-left"
         >
           <div className="text-lg sm:text-xl md:text-2xl font-bold text-white">
@@ -230,9 +229,9 @@ function HeroStats() {
           </div>
           <div className="w-6 sm:w-8 h-[2px] bg-[#8b5cf6]/40 mt-1.5 mb-1 rounded-full mx-auto md:mx-0" />
           <div className="text-[10px] sm:text-xs text-white/60">{stat.label}</div>
-        </motion.div>
+        </div>
       ))}
-    </div>
+    </motion.div>
   );
 }
 
