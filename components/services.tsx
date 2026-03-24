@@ -33,7 +33,7 @@ function AutomationVisual() {
     { label: "Action", x: 75, y: 12, color: "#3b82f6" },
   ];
   return (
-    <div className="hidden w-full flex-1 overflow-hidden rounded-2xl border border-white/[0.03] bg-[#0a0a12]/90 md:block">
+    <div className="w-full flex-1 min-h-[160px] overflow-hidden rounded-2xl border border-white/[0.03] bg-[#0a0a12]/90">
       <div className="flex h-8 items-center justify-between border-b border-white/[0.04] px-3.5">
         <div className="flex items-center gap-1.5">
           <div className="h-[7px] w-[7px] rounded-full bg-[#ff5f57]/50" />
@@ -199,7 +199,7 @@ function TerminalVisual() {
     { prompt: false, text: "● Live at app.client.de", color: "text-[#8b5cf6]/60" },
   ];
   return (
-    <div className="hidden w-full flex-1 overflow-hidden rounded-2xl border border-white/[0.03] bg-[#0a0a12]/90 md:block">
+    <div className="w-full flex-1 overflow-hidden rounded-2xl border border-white/[0.03] bg-[#0a0a12]/90">
       <div className="flex h-8 items-center justify-between border-b border-white/[0.04] px-3.5">
         <div className="flex items-center gap-1.5"><div className="h-[7px] w-[7px] rounded-full bg-[#ff5f57]/50" /><div className="h-[7px] w-[7px] rounded-full bg-[#febc2e]/50" /><div className="h-[7px] w-[7px] rounded-full bg-[#28c840]/50" /></div>
         <span className="text-[9px] tracking-wider text-white/20 uppercase">Terminal</span>
@@ -277,9 +277,9 @@ function ServiceCard({
     <motion.div className={`relative ${className}`} variants={cardVariants}>
       <div className="relative h-full rounded-2xl border-[0.75px] border-white/[0.04] p-2 md:rounded-3xl md:p-2.5">
         <GlowingEffect spread={40} glow disabled={false} proximity={64} inactiveZone={0.01} borderWidth={3} />
-        <div className={`group relative flex h-full overflow-hidden rounded-xl border-[0.75px] border-white/[0.04] bg-[#12121e] shadow-sm md:rounded-2xl ${isWide ? "md:flex-row" : "flex-col"}`}>
-          <div className={`relative z-10 p-6 ${isWide ? "flex flex-col justify-start md:w-[48%] md:shrink-0 pb-6" : isTall ? "pb-2" : "pb-3"}`}>
-            <div className="flex items-center gap-3 mb-3">
+        <div className={`group relative flex h-full flex-col overflow-hidden rounded-xl border-[0.75px] border-white/[0.04] bg-[#12121e] shadow-sm md:rounded-2xl ${isWide ? "md:flex-row" : ""}`}>
+          <div className={`relative z-10 p-5 md:p-6 ${isWide ? "md:w-[48%] md:shrink-0" : isTall ? "pb-2" : "pb-3"}`}>
+            <div className="flex items-center gap-3 mb-2">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg" style={{ backgroundColor: `${accentColor}10`, border: `1px solid ${accentColor}15` }}>
                 <Icon size={17} style={{ color: accentColor }} className="opacity-80" />
               </div>
@@ -288,9 +288,9 @@ function ServiceCard({
             <p className="text-sm leading-relaxed text-white/50">{description}</p>
           </div>
           {children && isWide ? (
-            <div className="relative z-10 flex flex-1 flex-col p-4 md:py-4 md:pr-4 md:pl-0">{children}</div>
+            <div className="relative z-10 flex flex-1 flex-col min-h-[180px] p-4 pt-0 md:pt-4 md:pr-4 md:pl-0">{children}</div>
           ) : children ? (
-            <div className="relative z-10 flex flex-1 flex-col px-6 pb-5">{children}</div>
+            <div className="relative z-10 flex flex-1 flex-col px-5 pb-4 md:px-6 md:pb-5">{children}</div>
           ) : null}
         </div>
       </div>

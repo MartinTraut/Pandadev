@@ -53,7 +53,7 @@ export default function About() {
                 src="/team.png"
                 alt="Aaron Hermann und Philipp Stapf, Gründer von P&A Development"
                 fill
-                className="object-cover"
+                className="object-contain object-center md:object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/60 via-transparent" />
 

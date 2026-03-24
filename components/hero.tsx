@@ -202,48 +202,35 @@ function HeroStats() {
   const inView = useInView(ref, { once: true });
 
   return (
-    <div ref={ref} className="flex items-center justify-center md:justify-start gap-6 sm:gap-8">
+    <div ref={ref} className="grid grid-cols-2 gap-x-8 gap-y-6 max-w-xs mx-auto sm:max-w-none sm:grid-cols-4 md:mx-0 md:gap-x-10">
       {stats.map((stat, i) => (
-        <div key={i} className="flex items-center gap-6 sm:gap-8">
-          {i > 0 && (
-            <motion.div
-              initial={{ scaleY: 0, opacity: 0 }}
-              animate={inView ? { scaleY: 1, opacity: 1 } : {}}
-              transition={{ duration: 0.5, delay: 1.1 + i * 0.15 }}
-              className="w-px h-8 bg-gradient-to-b from-transparent via-white/[0.1] to-transparent origin-center"
-            />
-          )}
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{
-              duration: 0.6,
-              delay: 1.1 + i * 0.15,
-              ease: [0.16, 1, 0.3, 1],
-            }}
-          >
-            <div className="text-xl md:text-2xl font-bold text-white">
-              {(stat as any).isCoffee ? (
-                <LiveCoffeeNumber initial={stat.value} suffix={stat.suffix} trigger={inView} delay={1.1 + i * 0.15} />
-              ) : (
-                <AnimatedNumber
-                  value={stat.value}
-                  suffix={stat.suffix}
-                  decimals={stat.decimals}
-                  trigger={inView}
-                  delay={1.1 + i * 0.15}
-                />
-              )}
-            </div>
-            <motion.div
-              initial={{ width: 0 }}
-              animate={inView ? { width: 24 } : {}}
-              transition={{ duration: 0.4, delay: 1.4 + i * 0.15 }}
-              className="h-[1px] bg-[#8b5cf6]/30 mt-1.5 mb-1"
-            />
-            <div className="text-[11px] text-white/50">{stat.label}</div>
-          </motion.div>
-        </div>
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 12 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          transition={{
+            duration: 0.6,
+            delay: 1.1 + i * 0.15,
+            ease: [0.16, 1, 0.3, 1],
+          }}
+          className="text-center md:text-left"
+        >
+          <div className="text-2xl md:text-2xl font-bold text-white">
+            {(stat as any).isCoffee ? (
+              <LiveCoffeeNumber initial={stat.value} suffix={stat.suffix} trigger={inView} delay={1.1 + i * 0.15} />
+            ) : (
+              <AnimatedNumber
+                value={stat.value}
+                suffix={stat.suffix}
+                decimals={stat.decimals}
+                trigger={inView}
+                delay={1.1 + i * 0.15}
+              />
+            )}
+          </div>
+          <div className="w-8 h-[2px] bg-[#8b5cf6]/40 mt-2 mb-1.5 rounded-full mx-auto md:mx-0" />
+          <div className="text-xs text-white/60">{stat.label}</div>
+        </motion.div>
       ))}
     </div>
   );
@@ -278,8 +265,8 @@ export default function Hero() {
         }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-6 pt-28 lg:pt-20 pb-28 w-full">
-        <div className="grid md:grid-cols-2 gap-10 md:gap-12 lg:gap-16 items-center">
+      <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-6 pt-24 md:pt-28 lg:pt-20 pb-16 md:pb-28 w-full">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-12 lg:gap-16 items-center">
           {/* Content */}
           <motion.div style={{ y: contentY }} className="text-center md:text-left">
 
@@ -324,7 +311,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col sm:flex-row items-center md:items-start gap-3 mb-14"
+              className="flex flex-col sm:flex-row items-center md:items-start gap-3 mb-10 md:mb-14"
             >
               <a
                 href="#kontakt"
@@ -349,18 +336,17 @@ export default function Hero() {
 
           {/* Team Image */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.9, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
-            style={{ y: imageY }}
+            initial={{ opacity: 0, y: 20, filter: "blur(6px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 0.8, delay: 0.5, ease: [0.16, 1, 0.3, 1] }}
             className="relative"
           >
-            <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-white/[0.06]">
+            <div className="relative aspect-[4/3] md:aspect-[3/4] rounded-2xl overflow-hidden border border-white/[0.06]">
               <Image
                 src="/hero-team.png"
                 alt="Aaron Hermann und Philipp Stapf, Gründer von P&A Development"
                 fill
-                className="object-contain object-center md:object-cover md:object-top"
+                className="object-cover object-top"
                 priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-60" />
