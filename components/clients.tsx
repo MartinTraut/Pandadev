@@ -1,45 +1,64 @@
 "use client";
 
+import { motion } from "framer-motion";
 import Image from "next/image";
-import { FadeIn } from "./fade-in";
 
 const clients = [
-  { name: "Rockstroh", logo: "/clients/rockstroh.png" },
+  { name: "Rockstroh GmbH", logo: "/clients/rockstroh.png" },
   { name: "SevenD", logo: "/clients/sevend.png" },
-  { name: "Kaufmann", logo: "/clients/kaufmann.png" },
+  { name: "Kaufmann Heizungsbau", logo: "/clients/kaufmann.png" },
   { name: "Dynaamiq", logo: "/clients/dynaamiq.png" },
-  { name: "Tinka", logo: "/clients/tinka.png" },
-  { name: "TD", logo: "/clients/td.png" },
-  { name: "Lobmüller", logo: "/clients/lobmueller.webp" },
+  { name: "Tinka GmbH", logo: "/clients/tinka.png" },
+  { name: "TD Design", logo: "/clients/td.png" },
+  { name: "Zum Lobmüller", logo: "/clients/lobmueller.webp" },
 ];
 
 export default function Clients() {
+  // Duplicate for seamless infinite scroll
+  const allLogos = [...clients, ...clients, ...clients, ...clients];
+
   return (
-    <section className="relative py-16">
-      <div className="mx-auto max-w-7xl px-6">
-        <FadeIn>
-          <p className="section-label mb-12 text-center">
-            Vertrauen von 20+ Unternehmen aus Handwerk, Gastro, Tech &amp; Dienstleistung
-          </p>
-        </FadeIn>
-        <FadeIn delay={0.15}>
-          <div className="flex flex-wrap items-center justify-center gap-x-16 gap-y-10">
-            {clients.map((client) => (
-              <div
-                key={client.name}
-                className="relative h-8 w-24 opacity-40 grayscale transition-all duration-500 hover:opacity-80 hover:grayscale-0 sm:w-28"
-              >
-                <Image
-                  src={client.logo}
-                  alt={client.name}
-                  fill
-                  className="object-contain brightness-0 invert"
-                  sizes="112px"
-                />
-              </div>
-            ))}
-          </div>
-        </FadeIn>
+    <section className="relative py-12 md:py-16">
+      {/* Label */}
+      <motion.p
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+        className="text-center text-xs sm:text-sm text-white/25 mb-8 md:mb-10 px-5"
+      >
+        Vertrauen von 20+ Unternehmen aus Handwerk, Gastro, Tech & Dienstleistung
+      </motion.p>
+
+      {/* Marquee container */}
+      <div className="relative overflow-hidden">
+        {/* Fade edges */}
+        <div className="absolute left-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-r from-[#050505] to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-16 md:w-32 bg-gradient-to-l from-[#050505] to-transparent z-10 pointer-events-none" />
+
+        {/* Scrolling logos */}
+        <div
+          className="flex items-center gap-12 sm:gap-16 md:gap-20 whitespace-nowrap"
+          style={{
+            animation: "marquee 40s linear infinite",
+            width: "max-content",
+          }}
+        >
+          {allLogos.map((client, i) => (
+            <div
+              key={`${client.name}-${i}`}
+              className="shrink-0 flex items-center justify-center h-8 md:h-10 opacity-30 hover:opacity-60 transition-opacity duration-500 grayscale hover:grayscale-0"
+            >
+              <Image
+                src={client.logo}
+                alt={client.name}
+                width={140}
+                height={40}
+                className="h-full w-auto object-contain max-w-[100px] sm:max-w-[120px] md:max-w-[140px]"
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -1,116 +1,156 @@
-import { Instagram, Linkedin, Mail, Phone } from "lucide-react";
+import { Instagram, Linkedin } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 const services = [
-  "Automatisierungen",
-  "Webdesign",
-  "Logo & Branding",
-  "SEO & GEO",
-  "App Entwicklung",
   "Software Entwicklung",
+  "App Entwicklung",
+  "Webdesign",
+  "Online Shops",
+  "Branding & Design",
+  "SEO & Marketing",
+  "KI & Automatisierung",
+  "AR / XR",
+];
+
+const company = [
+  { label: "Über uns", href: "#ueber-uns" },
+  { label: "Projekte", href: "#projekte" },
+  { label: "Prozess", href: "#prozess" },
+  { label: "FAQ", href: "#faq" },
+  { label: "Kontakt", href: "#kontakt" },
+];
+
+const legal = [
+  { label: "Impressum", href: "/impressum" },
+  { label: "Datenschutz", href: "/datenschutz" },
 ];
 
 export default function Footer() {
+  const year = new Date().getFullYear();
+
   return (
-    <footer className="border-t border-white/[0.06] bg-[#0b0b0f] py-16">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="grid grid-cols-1 gap-12 md:grid-cols-4">
+    <footer className="relative border-t border-white/[0.05] pt-16 pb-32 lg:pb-16 px-5 md:px-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 mb-16">
           {/* Brand */}
-          <div className="md:col-span-2">
+          <div className="col-span-2 lg:col-span-1">
             <Image
               src="/logo.png"
               alt="PANDADEV"
-              width={160}
-              height={36}
-              className="h-8 w-auto"
+              width={140}
+              height={32}
+              className="h-7 w-auto mb-4"
             />
-            <p className="card-body mt-4 max-w-sm">
+            <p className="text-sm text-white/40 leading-relaxed mb-6 max-w-xs">
               Full-Service Digital Partner. Strategie, Design, Automatisierung
-              und Entwicklung aus einer Hand. Zukunftssichere Lösungen,
-              benutzerzentriert und Made in Germany.
+              und Entwicklung aus einer Hand. Made in Germany.
             </p>
-            <div className="mt-6 flex gap-4">
+            <div className="flex gap-3">
               <a
-                href="https://www.instagram.com/pandadevelopment"
+                href="https://www.instagram.com/padevde"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/[0.04] text-[#94a3b8] transition-colors hover:bg-white/[0.08] hover:text-white"
-                aria-label="Instagram"
+                className="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/[0.08] flex items-center justify-center text-white/40 hover:text-[#8b5cf6] hover:border-[#8b5cf6]/20 transition-all"
               >
-                <Instagram size={16} />
+                <Instagram size={18} />
               </a>
               <a
                 href="https://www.linkedin.com/company/p-a-development"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/[0.04] text-[#94a3b8] transition-colors hover:bg-white/[0.08] hover:text-white"
-                aria-label="LinkedIn"
+                className="w-10 h-10 rounded-xl bg-white/[0.05] border border-white/[0.08] flex items-center justify-center text-white/40 hover:text-[#8b5cf6] hover:border-[#8b5cf6]/20 transition-all"
               >
-                <Linkedin size={16} />
+                <Linkedin size={18} />
               </a>
             </div>
           </div>
 
           {/* Services */}
           <div>
-            <h4 className="mb-4 text-sm font-semibold text-white">Services</h4>
+            <h4 className="text-sm font-semibold text-white mb-4">
+              Leistungen
+            </h4>
             <ul className="space-y-2.5">
-              {services.map((service) => (
-                <li key={service}>
+              {services.map((s) => (
+                <li key={s}>
                   <a
-                    href="#services"
-                    className="text-sm text-[#94a3b8] transition-colors hover:text-white"
+                    href="#leistungen"
+                    className="text-sm text-white/40 hover:text-white/70 transition-colors"
                   >
-                    {service}
+                    {s}
                   </a>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Company */}
           <div>
-            <h4 className="mb-4 text-sm font-semibold text-white">Kontakt</h4>
+            <h4 className="text-sm font-semibold text-white mb-4">
+              Unternehmen
+            </h4>
             <ul className="space-y-2.5">
-              <li>
+              {company.map((item) => (
+                <li key={item.label}>
+                  <a
+                    href={item.href}
+                    className="text-sm text-white/40 hover:text-white/70 transition-colors"
+                  >
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Legal */}
+          <div>
+            <h4 className="text-sm font-semibold text-white mb-4">
+              Rechtliches
+            </h4>
+            <ul className="space-y-2.5">
+              {legal.map((item) => (
+                <li key={item.label}>
+                  <Link
+                    href={item.href}
+                    className="text-sm text-white/40 hover:text-white/70 transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-6">
+              <h4 className="text-sm font-semibold text-white mb-2">
+                Kontakt
+              </h4>
+              <div className="space-y-1.5">
                 <a
                   href="mailto:info@pandadev.de"
-                  className="flex items-center gap-2 text-sm text-[#94a3b8] transition-colors hover:text-white"
+                  className="text-sm text-white/40 hover:text-white/70 transition-colors block"
                 >
-                  <Mail size={14} />
                   info@pandadev.de
                 </a>
-              </li>
-              <li>
                 <a
                   href="tel:+4915679297000"
-                  className="flex items-center gap-2 text-sm text-[#94a3b8] transition-colors hover:text-white"
+                  className="text-sm text-white/40 hover:text-white/70 transition-colors block"
                 >
-                  <Phone size={14} />
                   +49 15679 297000
                 </a>
-              </li>
-            </ul>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-white/[0.06] pt-8 text-xs text-[#64748b] md:flex-row">
-          <span>
-            &copy; {new Date().getFullYear()} P&A Development Hermann und Stapf
-            GbR
-          </span>
-          <div className="flex gap-6">
-            <a href="/impressum" className="transition-colors hover:text-white">
-              Impressum
-            </a>
-            <a
-              href="/datenschutz"
-              className="transition-colors hover:text-white"
-            >
-              Datenschutz
-            </a>
-          </div>
+        {/* Bottom */}
+        <div className="border-t border-white/[0.05] pt-6 flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-xs text-white/30">
+            &copy; {year} P&A Development GmbH. Alle Rechte vorbehalten.
+          </p>
+          <p className="text-xs text-white/20">
+            Mit Leidenschaft gestaltet in Heilbronn.
+          </p>
         </div>
       </div>
     </footer>
