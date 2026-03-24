@@ -185,10 +185,8 @@ function MobileCardStack({
     if (diff < -total / 2) diff += total;
 
     if (diff === 0) return { y: 0, scale: 1, opacity: 1, zIndex: 5 };
-    if (diff === -1) return { y: -120, scale: 0.88, opacity: 0.5, zIndex: 4 };
-    if (diff === 1) return { y: 120, scale: 0.88, opacity: 0.5, zIndex: 4 };
-    if (Math.abs(diff) === 2) return { y: diff > 0 ? 200 : -200, scale: 0.78, opacity: 0.2, zIndex: 3 };
-    return { y: diff > 0 ? 300 : -300, scale: 0.7, opacity: 0, zIndex: 0 };
+    if (Math.abs(diff) === 1) return { y: diff > 0 ? 60 : -60, scale: 0.93, opacity: 0.15, zIndex: 4 };
+    return { y: diff > 0 ? 100 : -100, scale: 0.87, opacity: 0, zIndex: 0 };
   };
 
   const isVisible = (index: number) => {
@@ -196,7 +194,7 @@ function MobileCardStack({
     let diff = index - currentIndex;
     if (diff > total / 2) diff -= total;
     if (diff < -total / 2) diff += total;
-    return Math.abs(diff) <= 2;
+    return Math.abs(diff) <= 1;
   };
 
   return (
@@ -233,41 +231,50 @@ function MobileCardStack({
               <div
                 className={cn(
                   "relative h-[340px] w-full overflow-hidden rounded-2xl border",
-                  isCurrent ? "border-[#8b5cf6]/20" : "border-white/[0.05]"
+                  isCurrent
+                    ? "border-[#8b5cf6]/25"
+                    : "border-white/[0.08] backdrop-blur-xl"
                 )}
                 style={{
                   boxShadow: isCurrent
-                    ? "0 20px 40px -12px rgba(139,92,246,0.15), 0 0 0 1px rgba(139,92,246,0.05)"
-                    : "0 8px 24px -8px rgba(0,0,0,0.3)",
+                    ? "0 20px 40px -12px rgba(139,92,246,0.2), 0 0 0 1px rgba(139,92,246,0.08)"
+                    : "0 8px 24px -8px rgba(0,0,0,0.4)",
+                  background: isCurrent ? undefined : "linear-gradient(135deg, rgba(139,92,246,0.08) 0%, rgba(10,10,26,0.95) 50%, rgba(99,102,241,0.06) 100%)",
                 }}
               >
                 <Image
                   src={project.image}
                   alt={project.title}
                   fill
-                  className="object-cover"
+                  className={cn("object-cover", !isCurrent && "opacity-10 blur-sm")}
                   draggable={false}
                   priority={isCurrent}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/20 to-transparent" />
+                {/* Strong gradient for text readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/60 to-[#050505]/10" />
+                {!isCurrent && (
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#8b5cf6]/[0.06] via-transparent to-[#6366f1]/[0.04]" />
+                )}
 
                 {/* Content overlay */}
                 <div className="absolute inset-x-0 bottom-0 p-5">
-                  <span className="text-[10px] uppercase tracking-widest text-[#8b5cf6] font-medium">
-                    {project.category}
-                  </span>
-                  <h3 className="text-lg font-bold text-white mt-1">
-                    {project.title}
-                  </h3>
-                  {isCurrent && (
-                    <motion.p
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      className="text-xs text-white/50 mt-1.5 line-clamp-2"
-                    >
-                      {project.description}
-                    </motion.p>
-                  )}
+                  <div className="relative z-10">
+                    <span className="text-[10px] uppercase tracking-widest text-[#a78bfa] font-semibold drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]">
+                      {project.category}
+                    </span>
+                    <h3 className="text-lg font-bold text-white mt-1 drop-shadow-[0_1px_3px_rgba(0,0,0,0.6)]">
+                      {project.title}
+                    </h3>
+                    {isCurrent && (
+                      <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="text-xs text-white/70 mt-1.5 line-clamp-2 drop-shadow-[0_1px_2px_rgba(0,0,0,0.6)]"
+                      >
+                        {project.description}
+                      </motion.p>
+                    )}
+                  </div>
                 </div>
 
                 {/* Tap hint */}
