@@ -65,19 +65,18 @@ const testimonials = [
 const containerVariants = {
   hidden: {},
   visible: {
-    transition: { staggerChildren: 0.08, delayChildren: 0.2 },
+    transition: { staggerChildren: 0.05, delayChildren: 0.05 },
   },
 };
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 40, scale: 0.95, filter: "blur(6px)" },
+  hidden: { opacity: 0, y: 24, filter: "blur(4px)" },
   visible: {
     opacity: 1,
     y: 0,
-    scale: 1,
     filter: "blur(0px)",
     transition: {
-      duration: 0.7,
+      duration: 0.45,
       ease: [0.16, 1, 0.3, 1] as const,
     },
   },
@@ -126,19 +125,19 @@ function TestimonialCard({
             <Quote size={36} className="text-[#8b5cf6]/10" />
           </motion.div>
 
-          {/* Stars with cascade pop */}
+          {/* Stars */}
           <div className="flex gap-1 mb-5 relative z-10">
             {Array.from({ length: t.stars }).map((_, si) => (
               <motion.div
                 key={si}
-                initial={{ opacity: 0, scale: 0, rotate: -30 }}
-                whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+                initial={{ opacity: 0, scale: 0 }}
+                whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{
                   type: "spring",
                   stiffness: 500,
-                  damping: 12,
-                  delay: 0.5 + index * 0.08 + si * 0.06,
+                  damping: 15,
+                  delay: 0.1 + si * 0.03,
                 }}
               >
                 <Star size={14} className="fill-[#facc15] text-[#facc15]" />
@@ -146,37 +145,37 @@ function TestimonialCard({
             ))}
           </div>
 
-          {/* Quote text with typewriter-ish reveal */}
+          {/* Quote */}
           <motion.p
             className="text-sm text-white/50 leading-relaxed mb-6 relative z-10 flex-1"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.6 + index * 0.08 }}
+            transition={{ duration: 0.4, delay: 0.15 }}
           >
             <span className="text-white/20">&ldquo;</span>
             {t.quote}
             <span className="text-white/20">&rdquo;</span>
           </motion.p>
 
-          {/* Divider line — draws in */}
+          {/* Divider */}
           <motion.div
             initial={{ scaleX: 0 }}
             whileInView={{ scaleX: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.7 + index * 0.08 }}
+            transition={{ duration: 0.4, delay: 0.2 }}
             className="h-px bg-gradient-to-r from-[#8b5cf6]/10 via-[#8b5cf6]/20 to-[#8b5cf6]/10 mb-5 origin-left"
           />
 
-          {/* Author — slides in from left */}
+          {/* Author */}
           <motion.div
             className="flex items-center gap-3 relative z-10"
-            initial={{ opacity: 0, x: -12 }}
+            initial={{ opacity: 0, x: -8 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{
-              duration: 0.5,
-              delay: 0.8 + index * 0.08,
+              duration: 0.35,
+              delay: 0.25,
               ease: [0.16, 1, 0.3, 1],
             }}
           >
