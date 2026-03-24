@@ -294,7 +294,15 @@ function TimelineIcon({
 export default function Process() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const prevRef = useRef(0);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: scrollRef,
@@ -345,8 +353,8 @@ export default function Process() {
         </motion.div>
       </div>
 
-      {/* Scroll runway */}
-      <div ref={scrollRef} className="relative" style={{ height: `${(N + 1) * 100}vh` }}>
+      {/* Scroll runway — shorter on mobile for smoother exit */}
+      <div ref={scrollRef} className="relative" style={{ height: isMobile ? `${N * 80}vh` : `${(N + 1) * 100}vh` }}>
         <div className="sticky top-0 h-screen flex items-center">
           <div className="w-full max-w-6xl mx-auto px-5 md:px-6">
             <div className="flex gap-8 lg:gap-16 h-[min(520px,70vh)]">

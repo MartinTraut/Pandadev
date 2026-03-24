@@ -1,8 +1,8 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
-import { CheckCircle2 } from "lucide-react";
+import { CheckCircle2, Coffee } from "lucide-react";
 import Image from "next/image";
 
 const values = [
@@ -11,6 +11,27 @@ const values = [
   "Qualität ohne Kompromisse",
   "Langfristige Partnerschaften",
 ];
+
+function CoffeeCounter() {
+  const [count, setCount] = useState(4217);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCount((prev) => prev + 1);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <div className="absolute bottom-4 left-4 z-10 glass-strong rounded-xl px-4 py-3">
+      <div className="flex items-center gap-2">
+        <Coffee size={14} className="text-[#8b5cf6]" />
+        <span className="text-sm font-semibold text-white tabular-nums">{count.toLocaleString("de-DE")}</span>
+      </div>
+      <span className="text-[10px] text-white/35 mt-0.5 block">Tassen Kaffee</span>
+    </div>
+  );
+}
 
 export default function About() {
   const ref = useRef(null);
@@ -27,7 +48,7 @@ export default function About() {
             transition={{ duration: 0.8, ease: [0.25, 0.1, 0.25, 1] }}
             className="relative"
           >
-            <div className="relative aspect-[3/2] lg:aspect-[4/5] rounded-2xl overflow-hidden">
+            <div className="relative aspect-[3/4] lg:aspect-[4/5] rounded-2xl overflow-hidden">
               <Image
                 src="/team.png"
                 alt="Aaron Hermann und Philipp Stapf, Gründer von P&A Development"
@@ -36,8 +57,8 @@ export default function About() {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/60 via-transparent" />
 
-              {/* Badge */}
-              <div className="absolute bottom-4 right-4 glass-strong rounded-xl px-4 py-3">
+              {/* Badges */}
+              <div className="absolute bottom-4 right-4 z-10 glass-strong rounded-xl px-4 py-3">
                 <span className="text-sm font-semibold text-white">
                   Gegründet 2024
                 </span>

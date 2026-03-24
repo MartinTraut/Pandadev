@@ -204,7 +204,7 @@ export default function Portfolio() {
         </motion.div>
 
         {/* 3D Scroll Grid */}
-        <div ref={containerRef} style={{ perspective: "1200px" }}>
+        <div ref={containerRef} className="md:[perspective:1200px]">
           <motion.div
             style={{ rotateX, scale, opacity }}
             className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
@@ -213,6 +213,10 @@ export default function Portfolio() {
               <motion.button
                 key={project.title}
                 onClick={() => setSelectedProject(project)}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.5, delay: isMobile ? 0 : i * 0.05, ease: [0.16, 1, 0.3, 1] }}
                 className={cn(
                   "group relative overflow-hidden rounded-2xl text-left",
                   "bg-white/[0.02] border border-white/[0.05]",

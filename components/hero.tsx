@@ -105,6 +105,7 @@ const stats = [
   { value: 50, suffix: "+", label: "Projekte", decimals: 0 },
   { value: 5.0, suffix: "", label: "Google Rating", decimals: 1 },
   { value: 100, suffix: "%", label: "Kundentreue", decimals: 0 },
+  { value: 4217, suffix: "+", label: "Tassen Kaffee", decimals: 0, isCoffee: true },
 ];
 
 function AnimatedNumber({
@@ -154,6 +155,48 @@ function AnimatedNumber({
   );
 }
 
+function LiveCoffeeNumber({ initial, suffix, trigger, delay }: { initial: number; suffix: string; trigger: boolean; delay: number }) {
+  const [count, setCount] = useState(0);
+  const [started, setStarted] = useState(false);
+  const [live, setLive] = useState(false);
+
+  useEffect(() => {
+    if (!trigger) return;
+    const timeout = setTimeout(() => setStarted(true), delay * 1000);
+    return () => clearTimeout(timeout);
+  }, [trigger, delay]);
+
+  useEffect(() => {
+    if (!started) return;
+    const duration = 2000;
+    const start = performance.now();
+    const tick = (now: number) => {
+      const elapsed = now - start;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(eased * initial));
+      if (progress < 1) requestAnimationFrame(tick);
+      else setLive(true);
+    };
+    requestAnimationFrame(tick);
+  }, [started, initial]);
+
+  useEffect(() => {
+    if (!live) return;
+    const interval = setInterval(() => {
+      setCount((prev) => prev + 1);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [live]);
+
+  return (
+    <span className="tabular-nums">
+      {started ? count.toLocaleString("de-DE") : "0"}
+      {suffix}
+    </span>
+  );
+}
+
 function HeroStats() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true });
@@ -180,13 +223,17 @@ function HeroStats() {
             }}
           >
             <div className="text-xl md:text-2xl font-bold text-white">
-              <AnimatedNumber
-                value={stat.value}
-                suffix={stat.suffix}
-                decimals={stat.decimals}
-                trigger={inView}
-                delay={1.1 + i * 0.15}
-              />
+              {(stat as any).isCoffee ? (
+                <LiveCoffeeNumber initial={stat.value} suffix={stat.suffix} trigger={inView} delay={1.1 + i * 0.15} />
+              ) : (
+                <AnimatedNumber
+                  value={stat.value}
+                  suffix={stat.suffix}
+                  decimals={stat.decimals}
+                  trigger={inView}
+                  delay={1.1 + i * 0.15}
+                />
+              )}
             </div>
             <motion.div
               initial={{ width: 0 }}
@@ -194,7 +241,7 @@ function HeroStats() {
               transition={{ duration: 0.4, delay: 1.4 + i * 0.15 }}
               className="h-[1px] bg-[#8b5cf6]/30 mt-1.5 mb-1"
             />
-            <div className="text-[11px] text-white/30">{stat.label}</div>
+            <div className="text-[11px] text-white/50">{stat.label}</div>
           </motion.div>
         </div>
       ))}
@@ -234,23 +281,9 @@ export default function Hero() {
       <div className="relative z-10 max-w-7xl mx-auto px-5 md:px-6 pt-28 lg:pt-20 pb-28 w-full">
         <div className="grid md:grid-cols-2 gap-10 md:gap-12 lg:gap-16 items-center">
           {/* Content */}
-          <motion.div style={{ y: contentY }}>
-            <motion.div
-              initial={{ opacity: 0, y: 16, filter: "blur(8px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
-              className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full border border-white/[0.06] bg-white/[0.02] mb-8"
-            >
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#8b5cf6] opacity-75" />
-                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[#8b5cf6]" />
-              </span>
-              <span className="text-[0.8rem] tracking-wide text-white/40">
-                Nur 3 neue Projekte pro Monat
-              </span>
-            </motion.div>
+          <motion.div style={{ y: contentY }} className="text-center md:text-left">
 
-            <h1 className="text-[2.75rem] sm:text-5xl md:text-6xl lg:text-[4.25rem] xl:text-[5rem] font-bold leading-[0.92] tracking-[-0.03em] mb-7">
+            <h1 className="text-[2.25rem] sm:text-5xl md:text-6xl lg:text-[4.25rem] xl:text-[5rem] font-bold leading-[0.95] tracking-[-0.03em] mb-7">
               <motion.span
                 initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -281,7 +314,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 16, filter: "blur(6px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ duration: 0.8, delay: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="text-base md:text-lg text-white/40 leading-relaxed max-w-lg mb-10 text-center md:text-left"
+              className="text-base md:text-lg text-white/40 leading-relaxed max-w-lg mx-auto md:mx-0 mb-10 text-center md:text-left"
             >
               Wir vereinen Strategie, Design und Technologie, damit dein
               Unternehmen online nicht nur sichtbar wird, sondern wächst.
@@ -291,7 +324,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col sm:flex-row gap-3 mb-14"
+              className="flex flex-col sm:flex-row items-center md:items-start gap-3 mb-14"
             >
               <a
                 href="#kontakt"
@@ -322,12 +355,12 @@ export default function Hero() {
             style={{ y: imageY }}
             className="relative"
           >
-            <div className="relative aspect-[16/9] md:aspect-[3/4] rounded-2xl overflow-hidden border border-white/[0.06]">
+            <div className="relative aspect-[3/4] rounded-2xl overflow-hidden border border-white/[0.06]">
               <Image
                 src="/hero-team.png"
                 alt="Aaron Hermann und Philipp Stapf, Gründer von P&A Development"
                 fill
-                className="object-cover"
+                className="object-contain object-center md:object-cover md:object-top"
                 priority
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-60" />
@@ -374,6 +407,7 @@ export default function Hero() {
               </div>
               <span className="text-[10px] text-white/35 mt-0.5 block">Google Bewertung</span>
             </motion.div>
+
           </motion.div>
         </div>
       </div>

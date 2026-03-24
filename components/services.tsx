@@ -329,7 +329,7 @@ export default function Services() {
         <motion.div
           className="grid grid-cols-1 gap-3 md:grid-cols-3 md:auto-rows-[minmax(220px,auto)]"
           variants={containerVariants} initial="hidden" whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}>
+          viewport={{ once: true, amount: 0.05 }}>
 
           {/* Row 1-2 col 1-2: Automation */}
           <ServiceCard icon={Zap} title="KI & Automatisierung"
