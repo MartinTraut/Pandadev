@@ -202,7 +202,7 @@ function HeroStats() {
   const inView = useInView(ref, { once: true });
 
   return (
-    <div ref={ref} className="grid grid-cols-2 gap-x-8 gap-y-6 max-w-xs mx-auto sm:max-w-none sm:grid-cols-4 md:mx-0 md:gap-x-10">
+    <div ref={ref} className="flex items-center justify-center md:justify-start gap-4 sm:gap-6 md:gap-8">
       {stats.map((stat, i) => (
         <motion.div
           key={i}
@@ -215,7 +215,7 @@ function HeroStats() {
           }}
           className="text-center md:text-left"
         >
-          <div className="text-2xl md:text-2xl font-bold text-white">
+          <div className="text-lg sm:text-xl md:text-2xl font-bold text-white">
             {(stat as any).isCoffee ? (
               <LiveCoffeeNumber initial={stat.value} suffix={stat.suffix} trigger={inView} delay={1.1 + i * 0.15} />
             ) : (
@@ -228,8 +228,8 @@ function HeroStats() {
               />
             )}
           </div>
-          <div className="w-8 h-[2px] bg-[#8b5cf6]/40 mt-2 mb-1.5 rounded-full mx-auto md:mx-0" />
-          <div className="text-xs text-white/60">{stat.label}</div>
+          <div className="w-6 sm:w-8 h-[2px] bg-[#8b5cf6]/40 mt-1.5 mb-1 rounded-full mx-auto md:mx-0" />
+          <div className="text-[10px] sm:text-xs text-white/60">{stat.label}</div>
         </motion.div>
       ))}
     </div>
@@ -264,7 +264,7 @@ export default function Hero() {
           {/* Content */}
           <motion.div className="text-center md:text-left">
 
-            <h1 className="text-[2.25rem] sm:text-5xl md:text-6xl lg:text-[4.25rem] xl:text-[5rem] font-bold leading-[0.95] tracking-[-0.03em] mb-7">
+            <h1 className="text-[2.5rem] sm:text-5xl md:text-6xl lg:text-[4.25rem] xl:text-[5rem] font-bold leading-[0.95] tracking-[-0.03em] mb-6">
               <motion.span
                 initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
                 animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
@@ -305,11 +305,11 @@ export default function Hero() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col sm:flex-row items-center md:items-start gap-3 mb-10 md:mb-14"
+              className="flex flex-row items-center justify-center md:justify-start gap-3 mb-10 md:mb-14"
             >
               <a
                 href="#kontakt"
-                className="group inline-flex items-center justify-center gap-2 h-12 px-7 text-sm font-semibold text-white bg-[#8b5cf6] rounded-xl hover:bg-[#7c3aed] transition-all duration-300 shadow-[0_0_20px_rgba(139,92,246,0.25)] hover:shadow-[0_0_30px_rgba(139,92,246,0.4)]"
+                className="group inline-flex items-center justify-center gap-2 h-11 sm:h-12 px-5 sm:px-7 text-[13px] sm:text-sm font-semibold text-white bg-[#8b5cf6] rounded-xl hover:bg-[#7c3aed] transition-all duration-300 shadow-[0_0_20px_rgba(139,92,246,0.25)] hover:shadow-[0_0_30px_rgba(139,92,246,0.4)]"
               >
                 Projekt starten
                 <ArrowRight
@@ -319,7 +319,7 @@ export default function Hero() {
               </a>
               <a
                 href="#kontakt"
-                className="inline-flex items-center justify-center gap-2 h-12 px-7 text-sm font-semibold text-white/50 border border-white/[0.08] rounded-xl hover:bg-white/[0.03] hover:text-white/70 hover:border-white/[0.12] transition-all duration-300"
+                className="inline-flex items-center justify-center gap-2 h-11 sm:h-12 px-5 sm:px-7 text-[13px] sm:text-sm font-semibold text-white/50 border border-white/[0.08] rounded-xl hover:bg-white/[0.03] hover:text-white/70 hover:border-white/[0.12] transition-all duration-300"
               >
                 Kostenloses Erstgespräch
               </a>
